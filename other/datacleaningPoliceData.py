@@ -1,7 +1,6 @@
 import pandas as pd
-from pathlib import Path
 
-PATH = Path('../data/PoliceDataAll.csv')
+PATH = "../data/PoliceDataAll.csv"
 df = pd.read_csv(PATH)
 
 colToDrop = ['EVENT_UNIQUE_ID', 'x', 'y']
