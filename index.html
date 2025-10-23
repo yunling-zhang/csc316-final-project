@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Limit Crash Visualization — Nathan</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
+<!-- Controls -->
+<div id="car-speed-limit-crashes-vis-nathan-controls">
+    <label for="car-speed-limit-crashes-vis-nathan-year-select">Select Year:</label>
+    <select id="car-speed-limit-crashes-vis-nathan-year-select"></select>
+</div>
+
+<!-- Visualization Container -->
+<div id="car-speed-limit-crashes-vis-nathan">
+    <h1>Number of Collisions by Speed Limit</h1>
+</div>
+
+<!-- JS -->
+<script src="js/speedLimitVisSigns.js"></script>
+<script src="js/main.js"></script>
 
 </body>
 </html>
