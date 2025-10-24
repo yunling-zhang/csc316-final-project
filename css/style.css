@@ -1,7 +1,8 @@
 /* ===========================
    Base Layout
    =========================== */
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -14,6 +15,62 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+/* ===========================
+   Clock Visualization
+   =========================== */
+#clock-visualization {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+}
+
+.hour-label {
+    font-family: "Inter", sans-serif;
+    fill: #333;
+}
+
+.hour-label.night {
+    fill: #495057;
+}
+
+.hour-tick {
+    stroke: #666;
+}
+
+.inner-hour-tick {
+    stroke: #666;
+}
+
+.time-segment {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.time-segment:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+
+.outer-circle,
+.inner-circle {
+    transition: fill 0.3s ease;
+}
+
+/* Day/Night indication */
+.outer-circle {
+    fill: #f8f9fa;
+}
+
+.inner-circle {
+    fill: #e9ecef;
 }
 
 
