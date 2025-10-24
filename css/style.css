@@ -91,6 +91,34 @@ h1 {
 }
 
 /* ===========================
+   Section Divider
+   =========================== */
+   
+.section-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 5rem 0;
+  }
+  
+  .section-divider::before,
+    .section-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 4px solid #333;
+  }
+  
+  .section-divider:not(:empty)::before {
+    margin-right: 1em;
+  }
+  
+  .section-divider:not(:empty)::after {
+    margin-left: 1em;
+  }
+
+
+
+/* ===========================
    Controls
    =========================== */
 #car-speed-limit-crashes-vis-nathan-controls {
@@ -159,4 +187,5 @@ h1 {
 
 .car {
     fill: #e63946;
+
 }
