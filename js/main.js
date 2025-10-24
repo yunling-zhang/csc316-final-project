@@ -18,7 +18,7 @@ function main() {
         console.error('Error loading the CSV file:', error);
     });
 
-    d3.csv(dataPathV2).then(rawData => {
+    d3.csv(dataPathV2, d3.autoType).then(rawData => {
         // rawData
         console.log('Data loaded successfully:', rawData.length, 'rows');
 

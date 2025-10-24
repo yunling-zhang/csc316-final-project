@@ -25,6 +25,31 @@ function updateClockHands() {
 }
 
 function initializeClockVisualization(rawData) {
+    const cols = Object.keys(rawData[0]);
+    const data = Object.fromEntries(cols.map(k => [k, d3.mean(rawData.slice(1,), d => +d[k])]));
+
+
+    // Process data into 8 time segments (3 hours each)
+    const timeSegments = [
+        { start: 0, end: 3, value: 0, isOuter: true },
+        { start: 3, end: 6, value: 0, isOuter: true },
+        { start: 6, end: 9, value: 0, isOuter: true },
+        { start: 9, end: 12, value: 0, isOuter: true },
+        { start: 12, end: 15, value: 0, isOuter: false },
+        { start: 15, end: 18, value: 0, isOuter: false },
+        { start: 18, end: 21, value: 0, isOuter: false },
+        { start: 21, end: 24, value: 0, isOuter: false }
+    ];
+    timeSegments.forEach((segment, i) => {
+        segment.value = Object.values(data)[i];
+    });
+    console.log("Time Segments:", timeSegments);
+
+    // Create color scale from yellow to red based on data values
+    const colorScale = d3.scaleSequential()
+        .domain([0, d3.max(timeSegments, d => d.value)])
+        .interpolator(d3.interpolateYlOrRd);
+
     const svg = d3.select("#clock-visualization")
         .append("svg")
         .attr("width", clockWidth)
@@ -51,6 +76,42 @@ function initializeClockVisualization(rawData) {
         .attr("fill", "#e9ecef")
         .attr("stroke", "#333")
         .attr("stroke-width", 2);
+
+
+    // Create arc generators for inner and outer segments
+    const outerArc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius)
+        .startAngle(d => (d.start / 12) * 2 * Math.PI)
+        .endAngle(d => (d.end / 12) * 2 * Math.PI);
+
+    const innerArc = d3.arc()
+        .innerRadius(innerRadius * 0.6)
+        .outerRadius(innerRadius)
+        .startAngle(d => ((d.start - 12) / 12) * 2 * Math.PI)
+        .endAngle(d => ((d.end - 12) / 12) * 2 * Math.PI);
+
+    // Add outer segments
+    svg.selectAll(".outer-segment")
+        .data(timeSegments.filter(d => d.isOuter))
+        .enter()
+        .append("path")
+        .attr("class", "time-segment")
+        .attr("d", outerArc)
+        .attr("fill", d => colorScale(d.value))
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1);
+
+    // Add inner segments
+    svg.selectAll(".inner-segment")
+        .data(timeSegments.filter(d => !d.isOuter))
+        .enter()
+        .append("path")
+        .attr("class", "time-segment")
+        .attr("d", innerArc)
+        .attr("fill", d => colorScale(d.value))
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1);
 
     // Add daytime hour labels (0-12)
     const dayHours = d3.range(13);

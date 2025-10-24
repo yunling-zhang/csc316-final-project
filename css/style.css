@@ -47,6 +47,16 @@ body {
     stroke: #666;
 }
 
+.time-segment {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.time-segment:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
 
 
 .outer-circle,
