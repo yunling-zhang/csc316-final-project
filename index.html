@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -43,6 +44,25 @@
 
     <!-- Main Content -->
     <div class="container-fluid" id="visualizations">
+        <!-- Heatmap Visualization -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 col-xl-10">
+                <section class="heatmap-section">
+                    <header class="heatmap-header text-center">
+                        <h2>Which day of week has highest collision rate?</h2>
+                        <p>This calendar-style heatmap shows number of collisions by weekday (columns) and year (rows). Use the year range below to filter. Hover over the cells for details.</p>
+                    </header>
+                    <div class="chart-card heatmap-card">
+                        <div id="heatmap" class="chart heatmap-chart"></div>
+                        <div id="year-range" class="year-range heatmap-year-range"></div>
+                        <div id="legend" class="legend heatmap-legend"></div>
+                        <p class="heatmap-source text-center">Source: <code>data/collisions_by_weekday_cleaned.csv</code>.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Speed Limit Visualization -->
         <!-- Controls -->
         <div class="d-flex justify-content-center">
             <div id="car-speed-limit-crashes-vis-nathan-controls">
@@ -97,6 +117,7 @@
     <!-- JS -->
     <script src="js/speedLimitVisSigns.js"></script>
     <script src="js/clockVis.js"></script>
+    <script src="js/calendar-heatmap.js"></script>
     <script src="js/main.js"></script>
 
 </body>

@@ -160,3 +160,240 @@ h1 {
 .car {
     fill: #e63946;
 }
+
+/* ===========================
+   Calendar Heatmap
+   =========================== */
+.heatmap-section {
+    padding: 0 16px 32px 16px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.heatmap-header h2 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    font-size: clamp(22px, 2.6vw, 34px);
+    letter-spacing: 0.2px;
+    color: #111;
+}
+
+.heatmap-header p {
+    margin: 0 18px 18px 18px;
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+.heatmap-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px 16px 24px 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.heatmap-chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.heatmap-section .axis text {
+    fill: #4b5563;
+    font-size: 12px;
+}
+
+.heatmap-section .axis line,
+.heatmap-section .axis path {
+    stroke: #e5e7eb;
+}
+
+.heatmap-section .cell {
+    stroke: #ffffff;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.heatmap-section .cell:hover {
+    stroke: #111111;
+    stroke-width: 1.25;
+}
+
+.heatmap-legend {
+    margin-top: 14px;
+    width: 100%;
+}
+
+.heatmap-legend .title {
+    font-size: 11px;
+    margin-bottom: 6px;
+    color: #4b5563;
+    text-align: center;
+}
+
+.heatmap-legend .axis text {
+    font-size: 10px;
+}
+
+.heatmap-legend svg {
+    width: 100%;
+    display: block;
+}
+
+.heatmap-year-range {
+    width: 100%;
+    margin: 0;
+}
+
+.heatmap-section .timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: stretch;
+}
+
+.heatmap-section .year-range-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.heatmap-section .range-label-text {
+    margin-bottom: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9a3412;
+    text-align: left;
+}
+
+.heatmap-section .year-range-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.heatmap-section .year-range-controls button {
+    background: #fff7ed;
+    border: 1px solid #fb923c;
+    color: #9a3412;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 120ms ease, box-shadow 120ms ease;
+}
+
+.heatmap-section .year-range-controls button:hover {
+    background: #fdba74;
+    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.18);
+}
+
+.heatmap-section .year-range-controls button:active {
+    background: #f97316;
+    color: #ffffff;
+}
+
+.heatmap-section .year-range-svg {
+    width: 100%;
+    min-width: 100%;
+    display: block;
+}
+
+.heatmap-section .car-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 12px auto;
+    width: 100%;
+}
+
+.heatmap-section .car-svg {
+    width: 100%;
+    height: auto;
+    max-width: 1000px;
+}
+
+#cabin-layer .car-cabin {
+    fill: #ffffff;
+    stroke: none;
+}
+
+#car-outline-layer .car-body-outline {
+    fill: none;
+    stroke: #1f2937;
+    stroke-width: 9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#labels-layer text {
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    fill: #1a1a1a;
+    letter-spacing: 0.03em;
+    paint-order: stroke;
+    stroke: rgba(255, 255, 255, 0.82);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+}
+
+#labels-layer .weekday-label {
+    text-transform: uppercase;
+}
+
+#labels-layer .year-label {
+    text-anchor: end;
+}
+
+.heatmap-section .grid-line {
+    stroke: rgba(148, 163, 184, 0.55);
+    stroke-width: 0.9;
+    shape-rendering: crispEdges;
+    pointer-events: none;
+}
+
+.heatmap-section .brush .selection {
+    fill: rgba(249, 115, 22, 0.22);
+    stroke: #f97316;
+    stroke-width: 2;
+    shape-rendering: geometricPrecision;
+}
+
+.heatmap-section .brush .handle {
+    fill: #f97316;
+    opacity: 0.92;
+}
+
+.heatmap-source {
+    margin-top: 18px;
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.96);
+    color: #111111;
+    border: 1px solid #d1d5db;
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translate(-50%, calc(-100% - 12px));
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.tooltip.visible {
+    opacity: 1;
+    transform: translate(-50%, calc(-100% - 8px));
+}
