@@ -11,8 +11,9 @@ function main() {
         // rawData
         console.log('Data loaded successfully:', rawData.length, 'rows');
 
-        // use the function from speedLimitVisSigns.js to init
+
         initializeVisualization(rawData);
+        initializeClockVisualization(rawData);
     }).catch(error => {
         console.error('Error loading the CSV file:', error);
     });
