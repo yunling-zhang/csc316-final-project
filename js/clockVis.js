@@ -17,7 +17,8 @@ function updateClockHands() {
     console.log("Current hour:", hours);
     // Update hour hand
     d3.select(".hour-hand")
-        .attr("transform", `rotate(${getRotation(hours, minutes)})`);
+        .attr("transform", `rotate(${getRotation(hours, minutes)})`)
+        .attr("y2", - (hours < 12 ? outerRadius * 0.9 : innerRadius * 0.8));
 
     // Call again in 1 minute 
     setTimeout(updateClockHands, 60000);
@@ -119,7 +120,7 @@ function initializeClockVisualization(rawData) {
         .attr("x2", 0)
         .attr("y2", -outerRadius * 0.5)
         .attr("stroke", "#2c3e50")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 4)
         .attr("stroke-linecap", "butt");
 
     // Center dot

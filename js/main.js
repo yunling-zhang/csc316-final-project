@@ -4,15 +4,25 @@
  * loading the car crash vs speed limit data and initialize the visualization
  */
 function main() {
-    const dataPath = 'data/cleaned_crash_by_month.csv';
+    const dataPathV1 = 'data/cleaned_crash_by_month.csv';
+    const dataPathV2 = 'data/col_hour.csv'
 
     // load data from CSV file
-    d3.csv(dataPath).then(rawData => {
+    d3.csv(dataPathV1).then(rawData => {
         // rawData
         console.log('Data loaded successfully:', rawData.length, 'rows');
 
 
         initializeVisualization(rawData);
+    }).catch(error => {
+        console.error('Error loading the CSV file:', error);
+    });
+
+    d3.csv(dataPathV2).then(rawData => {
+        // rawData
+        console.log('Data loaded successfully:', rawData.length, 'rows');
+
+
         initializeClockVisualization(rawData);
     }).catch(error => {
         console.error('Error loading the CSV file:', error);
