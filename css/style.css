@@ -57,6 +57,16 @@ body {
     cursor: pointer;
 }
 
+/* Clock viz helpers */
+.time-segment.highlight {
+    stroke: #222 !important;
+    stroke-width: 2.5px !important;
+    filter: url(#glow);
+}
+.hour-label.current {
+    font-weight: 900;
+    text-decoration: underline;
+}
 
 
 .outer-circle,
