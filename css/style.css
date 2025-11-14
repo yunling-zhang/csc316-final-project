@@ -17,8 +17,34 @@ body {
     min-height: 100vh;
 }
 
+.container-fluid {
+    flex: 1;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    margin: 0 0 12px 0;
+    font-weight: 700;
+    color: #1a237e;
+    text-align: center;
+}
+
+.panel-caption {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #444;
+    margin: 1rem 0 0.5rem 0;
+    padding: 0 1rem;
+    font-family: "Inter", sans-serif;
+}
+
 /* ===========================
-   Clock Visualization
+   Clock Visualization (default card)
    =========================== */
 #clock-visualization {
     width: 100%;
@@ -39,10 +65,7 @@ body {
     fill: #495057;
 }
 
-.hour-tick {
-    stroke: #666;
-}
-
+.hour-tick,
 .inner-hour-tick {
     stroke: #666;
 }
@@ -68,40 +91,20 @@ body {
     text-decoration: underline;
 }
 
-
 .outer-circle,
 .inner-circle {
     transition: fill 0.3s ease;
 }
 
-/* Day/Night indication */
 .outer-circle {
     fill: #f8f9fa;
 }
-
 .inner-circle {
     fill: #e9ecef;
 }
 
-
-.container-fluid {
-    flex: 1;
-}
-
-.navbar-brand {
-    font-size: 1.5rem;
-    letter-spacing: 0.5px;
-}
-
-h1 {
-    margin: 0 0 12px 0;
-    font-weight: 700;
-    color: #1a237e;
-    text-align: center;
-}
-
 /* ===========================
-   Controls
+   Controls (speed-limit vis)
    =========================== */
 #car-speed-limit-crashes-vis-nathan-controls {
     margin-top: 32px;
@@ -126,7 +129,7 @@ h1 {
 }
 
 /* ===========================
-   Visualization Container
+   Visualization Container (default card)
    =========================== */
 #car-speed-limit-crashes-vis-nathan {
     background: #fff;
@@ -172,7 +175,7 @@ h1 {
 }
 
 /* ===========================
-   Calendar Heatmap
+   Calendar Heatmap (default)
    =========================== */
 .heatmap-section {
     padding: 0 16px 32px 16px;
@@ -387,6 +390,7 @@ h1 {
     font-size: 13px;
 }
 
+/* global tooltip from clock/heatmap */
 .tooltip {
     position: fixed;
     pointer-events: none;
@@ -406,4 +410,353 @@ h1 {
 .tooltip.visible {
     opacity: 1;
     transform: translate(-50%, calc(-100% - 8px));
+}
+
+/* ===========================
+   Webtoon panels
+   =========================== */
+
+.webtoon {
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+    padding: 1.5rem 1rem 3rem;
+}
+
+.panel {
+    position: relative;
+    margin: 2rem auto;
+    background: #fdfcf7;
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.panel-image {
+    width: 100%;
+    display: block;
+}
+
+/* Chart panels (small in-panel + zoom) */
+.chart-panel {
+    position: absolute;
+    cursor: pointer;
+}
+
+.chart-panel .chart-mini,
+.chart-panel .chart-mini-sub,
+.chart-panel #clock-visualization,
+.chart-panel #car-speed-limit-crashes-vis-nathan {
+    background: transparent;
+}
+
+/* wrapper for zoom card content */
+.chart-content {
+    width: 100%;
+}
+
+/* Small close button that only shows in zoomed mode */
+.chart-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    border: none;
+    background: rgba(15, 23, 42, 0.8);
+    color: #fff;
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+/* Zoom overlay behaviour */
+.chart-panel[data-zoomable]::after {
+    content: "Click to zoom";
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    padding: 3px 8px;
+    font-size: 11px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+}
+
+.chart-panel.is-zoomed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-panel.is-zoomed::after {
+    content: "";
+}
+
+.chart-panel.is-zoomed .chart-close {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* white card for zoomed content */
+.chart-panel.is-zoomed .chart-content {
+    max-width: 1100px;
+    width: min(100%, 1100px);
+    max-height: 90vh;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+/* prevent body scroll while zoomed */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* ---------------------------
+   Panel-specific chart placement
+   --------------------------- */
+
+/* Panel 2 – phone heatmap (landscape) */
+.panel-2 .chart-panel--heatmap {
+    left: 32%;
+    bottom: 14%;
+    width: 40%;
+    transform: translateX(-50%);
+}
+
+/* flatten padding in phone mode */
+.panel-2 .chart-panel--heatmap .heatmap-section {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+.panel-2 .chart-panel--heatmap .heatmap-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* scale the car heatmap into the phone */
+.panel-2 .chart-panel--heatmap .car-svg {
+    transform:translate(-17%, -70%)  scale(0.65);
+    transform-origin: 50% 50%;
+}
+
+/* hide long UI in mini mode */
+.panel-2 .chart-panel--heatmap .heatmap-header,
+.panel-2 .chart-panel--heatmap .heatmap-year-range,
+.panel-2 .chart-panel--heatmap .heatmap-legend,
+.panel-2 .chart-panel--heatmap .heatmap-source {
+    display: none;
+}
+
+/* when zoomed, full size + show header/controls/legend */
+.panel-2 .chart-panel--heatmap.is-zoomed .car-svg {
+    transform: scale(1);
+}
+
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-header,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-year-range,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-legend,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-source {
+    display: block;
+}
+
+/* Panel 3 – clock on bathroom wall */
+.panel-3 .chart-panel--clock {
+    left: 26%;       /* center of round mirror */
+    top: 18%;        /* center of mirror */
+    width: 32%;
+    transform: translate(-50%, -50%);
+}
+
+/* mini mode: remove default card styling */
+.panel-3 .chart-panel--clock #clock-visualization {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* shrink entire SVG into mirror */
+.panel-3 .chart-panel--clock svg {
+    transform:translate(-30%, 12%)  scale(0.38);
+    transform-origin: center;
+}
+
+/* === Fix zoomed layout just for Panel 3 (clock) === */
+/* make sure the SVG itself cannot exceed the viewport AND remove mini scaling */
+.panel-3 .chart-panel--clock.is-zoomed #clock-visualization svg {
+    max-height: calc(100vh - 140px);
+    width: 100%;
+    height: auto;
+
+    /* NEW: reset the mini transform */
+    transform: none;              /* or: transform: translate(0, 0) scale(1); */
+    transform-origin: center;
+}
+
+
+/* keep the zoomed card within the viewport height */
+.panel-3 .chart-panel--clock.is-zoomed .chart-content--clock {
+    max-height: calc(100vh - 80px);
+}
+
+/* make sure the SVG itself cannot exceed the viewport */
+.panel-3 .chart-panel--clock.is-zoomed #clock-visualization svg {
+    max-height: calc(100vh - 140px);
+    width: 100%;
+    height: auto;
+}
+
+/* Panel 3 – hide risk banner + tooltip when inside the mirror */
+.panel-3 .chart-panel--clock #risk-banner,
+.panel-3 .chart-panel--clock #tooltip {
+    display: none !important;
+}
+
+.panel-3 .chart-panel--clock.is-zoomed #risk-banner {
+    display: block !important;   /* or flex; whichever it was before */
+}
+/* Panel 3 – hide title inside mirror, show only on zoom */
+.panel-3 .chart-panel--clock .chart-title {
+    display: none;
+}
+
+.panel-3 .chart-panel--clock.is-zoomed .chart-title {
+    display: block;
+}
+
+
+/* nice layout for clock + risk banner in zoom card */
+.chart-content--clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Panel 6 – speed-limit sign */
+.panel-6 .chart-panel--speed {
+    left: 47%;        /* center of the roadside board */
+    top: 42%;         /* vertical center of the board */
+    width: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* flatten default card styling inside sign */
+.panel-6 #car-speed-limit-crashes-vis-nathan {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* shrink whole SVG into the board */
+.panel-6 .chart-panel--speed svg {
+    transform:translate(-23%, 10%)  scale(0.20);
+    transform-origin: center;
+}
+
+/* zoomed: SVG full size */
+.panel-6 .chart-panel--speed.is-zoomed svg {
+    transform: scale(1);
+}
+
+/* compact controls on the sign */
+.panel-6 .speed-controls {
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.panel-6 .speed-controls select {
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+/* Panel 6 – hide year dropdown when inside the roadside sign */
+.panel-6 .chart-panel--speed #car-speed-limit-crashes-vis-nathan-controls {
+    display: none !important;
+}
+.panel-6 .chart-panel--speed.is-zoomed #car-speed-limit-crashes-vis-nathan-controls {
+    display: flex !important;    /* matches your original controls layout */
+}
+/* Panel 6 – hide title on roadside sign, show only on zoom */
+.panel-6 .chart-panel--speed .chart-title {
+    display: none;
+}
+
+.panel-6 .chart-panel--speed.is-zoomed .chart-title {
+    display: block;
+}
+
+
+/* Panel 7 – GPS/dashboard square */
+.panel-7 .chart-panel--roadtype {
+    left: 50%;
+    bottom: 12%;
+    width: 36%;
+    transform: translateX(-50%);
+}
+
+/* Panel 10 – calendar */
+.panel-10 .chart-panel--month {
+    right: 14%;
+    top: 40%;
+    width: 32%;
+    transform: translateY(-50%);
+}
+
+.chart-title {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    color: #111827;
+}
+
+/* Force zoomed panels to truly fill the screen (override panel-specific positioning) */
+.chart-panel.is-zoomed {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+/* ===========================
+   Responsive tweak
+   =========================== */
+@media (max-width: 768px) {
+    .panel {
+        margin: 1.5rem auto;
+    }
+
+    .chart-panel[data-zoomable]::after {
+        font-size: 10px;
+    }
 }
