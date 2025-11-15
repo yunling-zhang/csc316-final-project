@@ -739,6 +739,24 @@ body.no-scroll {
     display: block;
 }
 
+/* Panel 3 – hide legend inside mirror, show only on zoom */
+.panel-3 .chart-panel--clock .legend {
+    display: none;
+}
+
+.panel-3 .chart-panel--clock.is-zoomed .legend {
+    display: block;
+}
+
+/* Panel 3 – hide toggle button inside mirror, show only on zoom */
+.panel-3 .chart-panel--clock #clock-mode-toggle {
+    display: none;
+}
+
+.panel-3 .chart-panel--clock.is-zoomed #clock-mode-toggle {
+    display: inline-block;
+}
+
 
 /* nice layout for clock + risk banner in zoom card */
 .chart-content--clock {

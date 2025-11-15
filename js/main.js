@@ -5,7 +5,7 @@
  */
 function main() {
     const dataPathV1 = 'data/cleaned_crash_by_month.csv';
-    const dataPathV2 = 'data/col_hour.csv';
+    const dataPathV2 = 'data/col_hour_full.csv';
     const dataPathV3 = 'data/collisions_by_month.csv';
 
     // load data for speed-limit vis
@@ -16,9 +16,11 @@ function main() {
         console.error('Error loading the CSV file for speed-limit vis:', error);
     });
 
-    // load data for clock vis
-    d3.csv(dataPathV2, d3.autoType).then(rawData => {
+    // load data for clock vis - don't use autoType to preserve string column names
+    d3.csv('data/col_hour_full.csv').then(rawData => {
         console.log('Data loaded successfully (clock):', rawData.length, 'rows');
+        console.log('First row:', rawData[0]);
+        console.log('Columns:', rawData.columns);
         initializeClockVisualization(rawData);
     }).catch(error => {
         console.error('Error loading the CSV file for clock vis:', error);
