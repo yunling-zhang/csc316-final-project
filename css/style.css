@@ -822,6 +822,23 @@ body.no-scroll {
     display: block;
 }
 
+/* Panel 6 – hide speed display and slider when inside the roadside sign */
+.panel-6 .chart-panel--speed #speed-display-group {
+    visibility: hidden !important;
+}
+
+.panel-6 .chart-panel--speed #speed-control-container {
+    display: none !important;
+}
+
+.panel-6 .chart-panel--speed.is-zoomed #speed-display-group {
+    visibility: visible !important;
+}
+
+.panel-6 .chart-panel--speed.is-zoomed #speed-control-container {
+    display: block !important;
+}
+
 
 /* Panel 7 – GPS/dashboard square */
 .panel-7 .chart-panel--roadtype {
