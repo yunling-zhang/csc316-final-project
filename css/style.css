@@ -739,24 +739,6 @@ body.no-scroll {
     display: block;
 }
 
-/* Panel 3 – hide legend inside mirror, show only on zoom */
-.panel-3 .chart-panel--clock .legend {
-    display: none;
-}
-
-.panel-3 .chart-panel--clock.is-zoomed .legend {
-    display: block;
-}
-
-/* Panel 3 – hide toggle button inside mirror, show only on zoom */
-.panel-3 .chart-panel--clock #clock-mode-toggle {
-    display: none;
-}
-
-.panel-3 .chart-panel--clock.is-zoomed #clock-mode-toggle {
-    display: inline-block;
-}
-
 
 /* nice layout for clock + risk banner in zoom card */
 .chart-content--clock {
@@ -946,6 +928,271 @@ body.no-scroll {
     margin: 0 !important;
     transform: none !important;
 }
+
+/* ===========================
+   Roadtype Visualization Styles
+   =========================== */
+.roadtype-section {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.roadtype-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.roadtype-header p {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.roadtype-content {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+.roadtype-chart-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.roadtype-chart {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.roadtype-controls {
+    flex: 0 0 380px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.roadtype-slider-container {
+    margin-bottom: 15px;
+}
+
+.roadtype-slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.roadtype-year-range {
+    width: 100%;
+}
+
+.roadtype-year-range .axis {
+    font-size: 12px;
+}
+
+.roadtype-year-range .axis path,
+.roadtype-year-range .axis line {
+    stroke: #bdc3c7;
+}
+
+.roadtype-year-range .axis text {
+    fill: #7f8c8d;
+}
+
+.roadtype-year-range .brush .selection {
+    fill: #82c882;
+    fill-opacity: 0.4;
+    stroke: #6fb36f;
+    stroke-width: 2;
+}
+
+.roadtype-year-range .brush .handle {
+    fill: #82c882;
+    stroke: #6fb36f;
+    stroke-width: 2;
+}
+
+.roadtype-chart .bar {
+    transition: opacity 0.3s;
+}
+
+.roadtype-chart .bar:hover {
+    opacity: 0.7;
+}
+
+.roadtype-chart .label {
+    font-size: 11px;
+    fill: #2c3e50;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.roadtype-tooltip {
+    position: fixed;
+    background: rgba(44, 62, 80, 0.95);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10000;
+}
+
+.roadtype-chart .center-text {
+    font-size: 16px;
+    fill: #7f8c8d;
+    text-anchor: middle;
+    font-weight: 600;
+}
+
+.roadtype-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+}
+
+.roadtype-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #2c3e50;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.roadtype-legend .legend-item:hover {
+    background: #f0f0f0;
+}
+
+.roadtype-legend .legend-item.disabled {
+    opacity: 0.4;
+}
+
+.roadtype-legend .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.roadtype-view-toggle {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.roadtype-toggle-btn {
+    padding: 10px 20px;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.roadtype-toggle-btn:hover {
+    background: #ecf5ff;
+}
+
+.roadtype-toggle-btn.active {
+    background: #3498db;
+    color: white;
+}
+
+.roadtype-filter-section {
+    margin-bottom: 20px;
+}
+
+.roadtype-section-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+    .roadtype-content {
+        flex-direction: column;
+    }
+
+    .roadtype-controls {
+        width: 100%;
+        flex: unset;
+    }
+}
+
+/* Panel 7 – GPS/dashboard square */
+.panel-7 .chart-panel--roadtype {
+    left: 50%;
+    bottom: 14%;
+    width: 34%;
+    height: 32%;
+    transform: translateX(-30%) translateY(15%) scale(0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* hide title + description in mini (un-zoomed) state */
+.panel-7 .chart-panel--roadtype .roadtype-header {
+    display: none;
+}
+
+/* show them only when zoomed */
+.panel-7 .chart-panel--roadtype.is-zoomed .roadtype-header {
+    display: block;
+}
+
+/* Panel 7 – GPS/dashboard square (mini view) */
+.panel-7 .chart-panel--roadtype {
+    transform: translateX(-30%) translateY(15%) scale(0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* hide title + controls + source in mini view */
+.panel-7 .chart-panel--roadtype .roadtype-header,
+.panel-7 .chart-panel--roadtype .roadtype-controls,
+.panel-7 .chart-panel--roadtype .roadtype-source {
+    display: none;
+}
+
+/* when zoomed, show them again */
+.panel-7 .chart-panel--roadtype.is-zoomed .roadtype-header,
+.panel-7 .chart-panel--roadtype.is-zoomed .roadtype-controls,
+.panel-7 .chart-panel--roadtype.is-zoomed .roadtype-source {
+    display: block;
+}
+
+/* controls need flex layout in zoomed card */
+.panel-7 .chart-panel--roadtype.is-zoomed .roadtype-controls {
+    display: block;
+}
+
+
+
 /* ===========================
    Responsive tweak
    =========================== */
