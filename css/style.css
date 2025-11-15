@@ -412,6 +412,99 @@ h1 {
     transform: translate(-50%, calc(-100% - 8px));
 }
 
+/* 
+   Circular Bar Chart
+*/
+.circular-chart-section {
+    padding: 32px 16px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.circular-chart-section h2 {
+    font-weight: 700;
+    font-size: clamp(22px, 2.6vw, 34px);
+    letter-spacing: 0.2px;
+    color: #111;
+    margin-bottom: 12px;
+}
+
+.circular-chart-section p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.circular-chart-section .controls {
+    padding: 16px;
+}
+
+.circular-chart-section .controls label {
+    color: #333;
+    font-size: 15px;
+}
+
+#year-selector {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+#year-selector:hover {
+    border-color: #9ca3af;
+}
+
+#year-selector:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+#circular-bar-chart {
+    min-height: 800px;
+    background: transparent;
+    border-radius: 12px;
+    overflow: visible;
+}
+
+#circular-legend {
+    padding: 16px;
+}
+
+.circular-chart-section .chart-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    overflow: visible;
+}
+
+
+.month-bar {
+    transition: all 0.2s ease;
+}
+
+.month-bar:hover {
+    cursor: pointer;
+}
+
+
+.month-label {
+    user-select: none;
+    pointer-events: none;
+}
+
+
+.center-label {
+    user-select: none;
+    pointer-events: none;
+}
+
 /* ===========================
    Webtoon panels
    =========================== */
@@ -722,10 +815,97 @@ body.no-scroll {
 
 /* Panel 10 – calendar */
 .panel-10 .chart-panel--month {
-    right: 14%;
-    top: 40%;
-    width: 32%;
+    right: 8%;
+    top: 42%;
+    width: 36%;
+    height: 48%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+
+.panel-10 .chart-panel--month .circular-chart-section {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+.panel-10 .chart-panel--month .chart-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.panel-10 .chart-panel--month #circular-bar-chart {
+    transform: translate(-2.5%, 0%) scale(0.20);
+    transform-origin: center center;
+    min-height: unset;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-10 .chart-panel--month #circular-bar-chart svg {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.panel-10 .chart-panel--month header,
+.panel-10 .chart-panel--month .controls,
+.panel-10 .chart-panel--month #circular-legend,
+.panel-10 .chart-panel--month .chart-card p {
+    display: none !important;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+}
+
+
+.panel-10 .chart-panel--month.is-zoomed #circular-bar-chart {
+    transform: none;
+    display: block;
+    min-height: auto;
+}
+
+.panel-10 .chart-panel--month.is-zoomed #circular-bar-chart svg {
+    max-width: 800px;
+    width: 100%;
+    height: auto;
+}
+
+.panel-10 .chart-panel--month.is-zoomed .circular-chart-section {
+    padding: 32px 16px;
+    overflow: visible;
+}
+
+.panel-10 .chart-panel--month.is-zoomed .chart-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    padding: 24px 16px;
+    overflow: visible;
+    display: block;
+}
+
+.panel-10 .chart-panel--month.is-zoomed header,
+.panel-10 .chart-panel--month.is-zoomed .controls,
+.panel-10 .chart-panel--month.is-zoomed #circular-legend,
+.panel-10 .chart-panel--month.is-zoomed .chart-card p {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
 }
 
 .chart-title {

@@ -6,6 +6,7 @@
 function main() {
     const dataPathV1 = 'data/cleaned_crash_by_month.csv';
     const dataPathV2 = 'data/col_hour.csv';
+    const dataPathV3 = 'data/collisions_by_month.csv';
 
     // load data for speed-limit vis
     d3.csv(dataPathV1).then(rawData => {
@@ -23,22 +24,42 @@ function main() {
         console.error('Error loading the CSV file for clock vis:', error);
     });
 
-    // heatmap is self-invoking in calendar-heatmap.js, so we just set up zoom UX
+    // Load monthly collisions data for circular bar chart
+    d3.text(dataPathV3).then(text => {
+        console.log('Monthly collisions text loaded');
+
+        const monthlyData = parseMonthlyCSVText(text);
+        console.log('Parsed monthly data:', monthlyData);
+
+        if (monthlyData && monthlyData.length > 0) {
+            
+            window.monthlyChartData = monthlyData;
+            
+            
+            setTimeout(() => {
+                initializeCircularChart(monthlyData);
+            }, 100);
+        } else {
+            console.error('Failed to parse monthly data');
+        }
+    }).catch(error => {
+        console.error('Error loading monthly collisions CSV:', error);
+    });
+
+    
     setupZoomPanels();
 }
 
-// simple generic zoom handler for any .chart-panel[data-zoomable]
+
 function setupZoomPanels() {
     const panels = document.querySelectorAll('.chart-panel[data-zoomable]');
     panels.forEach(panel => {
         const closeBtn = panel.querySelector('.chart-close');
 
-        // open zoom on click (but ignore clicks on select boxes etc.)
+        // open zoom on click
         panel.addEventListener('click', (evt) => {
-            // if we clicked the close button, that is handled separately
             if (evt.target === closeBtn) return;
 
-            // do not trigger zoom when user interacts with form controls
             const tag = evt.target.tagName.toLowerCase();
             if (['select', 'option', 'button', 'input'].includes(tag)) return;
 
@@ -59,5 +80,5 @@ function setupZoomPanels() {
     });
 }
 
-// run after loading. make sure DOM is ready
+
 document.addEventListener('DOMContentLoaded', main);

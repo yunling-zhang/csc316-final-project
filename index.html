@@ -162,8 +162,27 @@
         <div class="chart-panel chart-panel--month" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
             <div class="chart-content chart-content--month">
-                <div id="month-chart" class="chart-mini"></div>
-                <!-- You can hook your “Interactive Circular Bar Chart 2” here -->
+                <section class="circular-chart-section">
+                    <header class="text-center mb-4">
+                        <h2>When Do Most Collisions Occur Throughout the Year?</h2>
+                        <p>Explore monthly collision patterns in a circular visualization. Select a year to see how collision rates vary across different months.</p>
+                    </header>
+
+                    
+                    <div class="controls text-center mb-4">
+                        <label for="year-selector" class="me-2 fw-bold">Select Year:</label>
+                        <select id="year-selector" class="form-select form-select-sm d-inline-block w-auto"></select>
+                    </div>
+
+                    
+                    <div class="chart-card">
+                        <div id="circular-bar-chart" class="d-flex justify-content-center"></div>
+                        <div id="circular-legend" class="d-flex justify-content-center mt-3"></div>
+                        <p class="text-center text-muted mt-3 mb-0">
+                            <small>Source: <code>data/collisions_by_month.csv</code></small>
+                        </p>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -219,7 +238,7 @@
 <script src="js/speedLimitVisSigns.js"></script>
 <script src="js/clockVis.js"></script>
 <script src="js/calendar-heatmap.js"></script>
-<!-- future road-type + monthly chart JS would go here -->
+<script src="js/circularBarChart.js"></script>
 <script src="js/main.js"></script>
 
 </body>
