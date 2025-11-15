@@ -136,8 +136,42 @@
         <div class="chart-panel chart-panel--roadtype" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
             <div class="chart-content chart-content--roadtype">
-                <!-- When you have the road-type chart JS, render it into this div -->
-                <div id="roadtype-chart" class="chart-mini"></div>
+                <section class="roadtype-section">
+                    <header class="roadtype-header text-center">
+                        <h2>Road Collisions by Roadway Type</h2>
+                        <p>Circular bar chart showing collision data by road division type across years</p>
+                    </header>
+
+                    <div class="roadtype-content">
+                        <div class="roadtype-chart-panel">
+                            <div id="chart" class="roadtype-chart"></div>
+                            <div class="tooltip roadtype-tooltip"></div>
+                        </div>
+
+                        <div class="roadtype-controls">
+                            <div class="roadtype-filter-section">
+                                <div class="roadtype-section-title">View Mode:</div>
+                                <div class="roadtype-view-toggle">
+                                    <button class="toggle-btn roadtype-toggle-btn active" data-view="detailed">Detailed View</button>
+                                    <button class="toggle-btn roadtype-toggle-btn" data-view="combined">Combined View</button>
+                                </div>
+                            </div>
+
+                            <div class="roadtype-slider-container">
+                                <div class="roadtype-slider-label">
+                                    <span>Select Year Range:</span>
+                                    <span id="yearRangeDisplay">1999 - 2021 (avg: 2010)</span>
+                                </div>
+                                <div id="roadtype-year-range" class="roadtype-year-range"></div>
+                            </div>
+
+                            <div class="roadtype-filter-section">
+                                <div class="roadtype-section-title">Filter Road Types (click to toggle):</div>
+                                <div id="roadtype-legend" class="legend roadtype-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -234,11 +268,14 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- PapaParse for CSV parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <!-- JS -->
 <script src="js/speedLimitVisSigns.js"></script>
 <script src="js/clockVis.js"></script>
 <script src="js/calendar-heatmap.js"></script>
 <script src="js/circularBarChart.js"></script>
+<script src="js/collision_by_roadtype.js"></script>
 <script src="js/main.js"></script>
 
 </body>
