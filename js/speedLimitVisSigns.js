@@ -16,6 +16,11 @@ let xBand, yScale;
 let speedKeys = [];
 let allYears = [];
 let cachedByYear = {};
+let currentSpeed = 0;
+let currentYear = null;
+let activeSigns = [];
+let animationFrameId = null;
+let speedControlSlider = null;
 
 // data cleaning helper
 function getYear(d) {
@@ -126,33 +131,137 @@ function initializeVisualization(rawData) {
     // y-axis group
     svg.append("g").attr("class", "y-axis").attr("transform", `translate(-30,0)`);
 
-    // car
+    // car - fixed position
+    const carX = 100;
     svg
         .append("path")
         .attr("class", "car")
-        .attr("transform", `translate(-${carWidth}, ${roadY - carHeight})`)
+        .attr("transform", `translate(${carX}, ${roadY - carHeight})`)
         .attr("d", getCarPath(0, carHeight, carWidth, carHeight))
         .attr("id", "animated-car")
         .attr("fill", "#e63946");
 
+    // Speed display in top right corner of SVG
+    const speedDisplayGroup = svg.append("g")
+        .attr("id", "speed-display-group")
+        .attr("transform", `translate(${width - 200}, -10)`);
+
+    const speedDisplayBg = speedDisplayGroup.append("rect")
+        .attr("id", "speed-display-bg")
+        .attr("x", -80)
+        .attr("y", -25)
+        .attr("width", 160)
+        .attr("height", 70)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .attr("fill", "#2c3e50")
+        .attr("opacity", 0.9)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 2);
+
+    const speedLabel = speedDisplayGroup.append("text")
+        .attr("id", "speed-label")
+        .attr("x", 0)
+        .attr("y", -5)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "600")
+        .attr("fill", "#fff")
+        .text("SPEED");
+
+    const speedValue = speedDisplayGroup.append("text")
+        .attr("id", "speed-value")
+        .attr("x", 0)
+        .attr("y", 25)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "32px")
+        .attr("font-weight", "900")
+        .attr("fill", "#e63946")
+        .text("0");
+
+
+
+    // Speed control slider
+    const container = d3.select("#car-speed-limit-crashes-vis-nathan");
+    const sliderContainer = container.append("div")
+        .attr("id", "speed-control-container")
+        .style("margin-top", "20px")
+        .style("padding", "10px")
+        .style("background", "#f8f9fa")
+        .style("border-radius", "8px");
+
+    sliderContainer.append("label")
+        .attr("for", "speed-control-slider")
+        .style("display", "block")
+        .style("margin-bottom", "8px")
+        .style("font-weight", "600")
+        .text("Car Speed (mph): ");
+
+    const slider = sliderContainer.append("input")
+        .attr("type", "range")
+        .attr("id", "speed-control-slider")
+        .attr("min", 0)
+        .attr("max", 100)
+        .attr("value", 0)
+        .attr("step", 1)
+        .style("width", "100%")
+        .style("max-width", "600px");
+
+    const speedDisplay = sliderContainer.append("div")
+        .attr("id", "speed-display")
+        .style("margin-top", "8px")
+        .style("font-size", "14px")
+        .style("color", "#666")
+        .text("Speed: 0 mph");
+
+    speedControlSlider = slider.node();
+
+    slider.on("input", function() {
+        currentSpeed = +this.value;
+        speedDisplay.text(`Speed: ${currentSpeed} mph`);
+        speedValue.text(currentSpeed);
+    });
+
+    currentYear = defaultYear;
     updateVisualization(defaultYear);
 
     yearSel.on("change", function () {
-        updateVisualization(+this.value);
+        currentYear = +this.value;
+        updateVisualization(currentYear);
     });
+}
 
-    animateCar();
+// Find which speed limit applies to current speed
+// Returns the speed limit that the current speed falls within
+function getSpeedLimitForSpeed(speed, speedLimits) {
+    if (speed === 0) return null;
+    
+    // Sort speed limits in ascending order
+    const sorted = [...speedLimits].sort((a, b) => parseInt(a.speed, 10) - parseInt(b.speed, 10));
+    
+    // Find the speed limit that matches or is closest below the current speed
+    for (let i = sorted.length - 1; i >= 0; i--) {
+        const limit = parseInt(sorted[i].speed, 10);
+        if (speed >= limit) {
+            return sorted[i];
+        }
+    }
+    
+    // If speed is below all limits, return the lowest one
+    return sorted[0];
 }
 
 // update visualization for a given year
 function updateVisualization(year) {
+    if (!year) return;
+    
     const svg = d3.select("#car-speed-limit-crashes-vis-nathan svg g");
     const data = cachedByYear[year];
-    xBand.domain(data.map(d => d.speed));
+    if (!data || data.length === 0) return;
 
     // y domain and limit
     const maxVal = d3.max(data, d => d.value);
-    yScale.domain([0, maxVal * 1.05]); // leave 5% headroom
+    yScale.domain([0, maxVal * 1.05]);
 
     // y-axis with subtle grid lines
     const axis = d3
@@ -173,96 +282,114 @@ function updateVisualization(year) {
         )
         .call(g => g.selectAll(".domain").attr("stroke", "#888"));
 
-    const signs = svg.selectAll(".speed-sign").data(data, d => d.speed);
-    const enter = signs
-        .enter()
-        .append("g")
-        .attr("class", "speed-sign")
-        .attr("transform", d => `translate(${xBand(d.speed) + xBand.bandwidth() / 2}, 0)`);
+    // Stop existing animation if running
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
 
-    // Pole
-    enter
+    // Don't clear existing signs - just start/restart animation loop
+    animateSigns(svg, data, year);
+}
+
+function animateSigns(svg, data, year) {
+    const spawnX = width + 50;
+    let lastSpawnTime = 0;
+    let lastSpeedCheckTime = 0;
+    const speedCheckInterval = 200;
+    let currentSpeedForSpawning = 0;
+    let lastFrameTime = performance.now();
+    
+    function animate(currentTime) {
+        const deltaTime = currentTime - lastFrameTime;
+        lastFrameTime = currentTime;
+        
+        // Check slider speed every 0.2 seconds (200ms)
+        if ((currentTime - lastSpeedCheckTime) >= speedCheckInterval) {
+            currentSpeedForSpawning = currentSpeed;
+            lastSpeedCheckTime = currentTime;
+        }
+        
+        if (currentSpeedForSpawning > 0) {
+            const speedFactor = currentSpeedForSpawning / 50;
+            const baseSpawnInterval = 1000;
+            const spawnInterval = Math.max(150, baseSpawnInterval / (1 + speedFactor * 3));
+            
+            if ((currentTime - lastSpawnTime) >= spawnInterval) {
+                const speedLimitData = getSpeedLimitForSpeed(currentSpeedForSpawning, data);
+                if (speedLimitData) {
+                    spawnSign(svg, speedLimitData, spawnX);
+                    lastSpawnTime = currentTime;
+                }
+            }
+        }
+
+        // Use the current slider speed for movement (real-time)
+        const moveSpeed = currentSpeed * 0.5;
+        for (let i = activeSigns.length - 1; i >= 0; i--) {
+            const sign = activeSigns[i];
+            sign.x -= moveSpeed * (deltaTime / 16.67);
+            
+            if (sign.x < -100) {
+                sign.group.remove();
+                activeSigns.splice(i, 1);
+            } else {
+                sign.group.attr("transform", `translate(${sign.x}, 0)`);
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    lastFrameTime = performance.now();
+    lastSpeedCheckTime = performance.now();
+    animate(performance.now());
+}
+
+function spawnSign(svg, speedLimitData, startX) {
+    const safeY = Math.max(yScale(speedLimitData.value), 60);
+    const signX = startX;
+    
+    const signGroup = svg.append("g")
+        .attr("class", "speed-sign")
+        .attr("transform", `translate(${signX}, 0)`);
+
+    const pole = signGroup
         .append("rect")
         .attr("class", "sign-pole")
         .attr("x", -poleWidth / 2)
         .attr("width", poleWidth)
         .attr("fill", "#444")
-        .attr("y", roadY - signSize / 2)
-        .attr("height", 0);
+        .attr("y", safeY)
+        .attr("height", roadY - safeY);
 
-    // Square sign
-    enter
+    const signSquare = signGroup
         .append("rect")
         .attr("class", "sign-square")
         .attr("width", signWidth)
         .attr("height", signSize)
         .attr("x", -signWidth / 2)
-        .attr("y", roadY - signSize / 2)
+        .attr("y", safeY - signSize)
         .attr("rx", 8)
         .attr("ry", 8)
         .attr("stroke", "#d62828")
         .attr("stroke-width", 3)
         .attr("fill", "#fff");
 
-    // Text (speed label)
-    enter
+    const signText = signGroup
         .append("text")
         .attr("class", "sign-text")
         .attr("text-anchor", "middle")
         .attr("font-size", "14px")
         .attr("font-weight", 700)
-        .attr("y", roadY - signSize / 3)
-        .text(d => `${d.speed}`);
+        .attr("x", 0)
+        .attr("y", safeY - signSize / 2 + 5)
+        .text(`${speedLimitData.speed}`);
 
-    const merged = enter.merge(signs);
-
-    const safeY = d => Math.max(yScale(d.value), 60); // prevent overshoot
-
-    merged
-        .transition()
-        .duration(800)
-        .attr("transform", d => `translate(${xBand(d.speed) + xBand.bandwidth() / 2},0)`);
-
-    merged
-        .select(".sign-pole")
-        .transition()
-        .duration(900)
-        .attr("y", d => safeY(d))
-        .attr("height", d => roadY - safeY(d));
-
-    merged
-        .select(".sign-square")
-        .transition()
-        .duration(900)
-        .attr("y", d => safeY(d) - signSize);
-
-    merged
-        .select(".sign-text")
-        .transition()
-        .duration(900)
-        .attr("y", d => safeY(d) - signSize / 2 + 5)
-        .text(d => `${d.speed}`);
-
-    signs.exit().remove();
-
-    // Update title
-    const titleSel = d3.select("#car-speed-limit-crashes-vis-nathan h1");
-    if (!titleSel.empty()) {
-        titleSel.text(`Number of Collisions by Speed Limit — ${year}`);
-    }
+    activeSigns.push({
+        group: signGroup,
+        x: signX,
+        speedLimit: speedLimitData
+    });
 }
 
-//car animation.
-function animateCar() {
-    const car = d3.select("#animated-car");
-    function repeat() {
-        car
-            .attr("transform", `translate(-${carWidth}, ${roadY - carHeight})`)
-            .transition()
-            .duration(10000)
-            .ease(d3.easeLinear)
-            .attr("transform", `translate(${width}, ${roadY - carHeight})`)
-            .on("end", repeat);
-    }
-    repeat();
-}
