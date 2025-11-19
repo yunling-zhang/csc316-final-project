@@ -666,6 +666,7 @@ body.no-scroll {
     transform: scale(1);
 }
 
+
 .panel-2 .chart-panel--heatmap.is-zoomed .heatmap-header,
 .panel-2 .chart-panel--heatmap.is-zoomed .heatmap-year-range,
 .panel-2 .chart-panel--heatmap.is-zoomed .heatmap-legend,
