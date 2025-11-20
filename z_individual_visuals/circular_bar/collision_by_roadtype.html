@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Bar Chart - Collisions by Division</title>
+    <link rel="stylesheet" href="css/collision_by_roadtype.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="container">
+            <h1>Road Collisions by Roadway Type</h1>
+            <p class="subtitle">Circular bar chart showing collision data by road division type</p>
+            <div class="content">
+                <div class="chart-panel">
+                    <div id="chart"></div>
+                    <div class="tooltip"></div>
+                </div>
+                <div class="controls">
+                    <div class="filter-section">
+                        <div class="section-title">View Mode:</div>
+                        <div class="view-toggle">
+                            <button class="toggle-btn active" data-view="detailed">Detailed View</button>
+                            <button class="toggle-btn" data-view="combined">Combined View</button>
+                        </div>
+                    </div>
+
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Select Year Range:</span>
+                            <span id="yearRangeDisplay">1999 - 2021 (avg: 2010)</span>
+                        </div>
+                        <div id="year-range"></div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="section-title">Filter Road Types (click to toggle):</div>
+                        <div class="legend" id="legend"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/collision_by_roadtype.js"></script>
+</body>
+</html>

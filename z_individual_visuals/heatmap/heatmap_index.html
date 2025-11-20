@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>D3 Calendar Heatmap (Weekdays × Years)</title>
+  <link rel="stylesheet" href="css/heatmap_styles.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <h1>Collisions by Weekday × Year</h1>
+      <p>This calendar-style heatmap shows counts by weekday (columns) and year (rows). Use the year range below to
+        filter.</p>
+    </header>
+
+    <section class="chart-card">
+      <section class="car-section">
+        <img src="img/car_background.png" class="car-fullwidth" alt="car" />
+        <div class="heatmap-floating-panel">
+          <div id="heatmap" class="chart"></div>
+        </div>
+      </section>
+
+
+      <!-- Controls + legend panel below the car -->
+      <section class="controls-section">
+        <div id="year-range" class="year-range"></div>
+        <div id="legend" class="legend"></div>
+      </section>
+    </section>
+
+    <footer>
+      <p>
+        Source: <code>data/collisions_by_weekday_cleaned.csv</code>. Hover cells for details.
+      </p>
+    </footer>
+  </main>
+
+  <script src="js/calendar-heatmap.js"></script>
+</body>
+
+</html>
