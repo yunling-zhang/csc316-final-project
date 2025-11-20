@@ -1,11 +1,10 @@
 (async function () {
   const container = d3.select("#heatmap").html("");
-  const legendContainer = d3.select("#legend");
+  const legendContainer = d3.select("#legend").html("");
   const rangeContainer = d3.select("#year-range").html("");
-  const miniContainer = d3.select("#heatmap-mini");  // may be empty if not on this page
+  const miniContainer = d3.select("#heatmap-mini"); // phone mini preview (Panel 2)
 
-
-  // Load CSV
+  // ---------- Load CSV ----------
   let raw;
   try {
     raw = await d3.csv("data/collisions_by_weekday_cleaned.csv");
@@ -38,6 +37,18 @@
 
   const weekdayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const weekdayMap = new Map(weekdayOrder.map(w => [w.toLowerCase(), w]));
+
+  // SHORT LABELS for x-axis
+  const weekdayShort = {
+    Monday: "MON",
+    Tuesday: "TUE",
+    Wednesday: "WED",
+    Thursday: "THU",
+    Friday: "FRI",
+    Saturday: "SAT",
+    Sunday: "SUN"
+  };
+
   const valueFormat = d3.format(",");
 
   // Year columns
@@ -45,24 +56,27 @@
     .map(c => c.trim())
     .filter(c => /^\d{4}$/.test(c))
     .sort((a, b) => +a - +b);
+
   if (!yearCols.length) {
     console.warn("No year columns found.");
     container.append("p").text("No numeric year columns found in the CSV.");
     return;
   }
 
-  // Long data
+  // ---------- Long-form data ----------
   const longData = [];
   for (const row of raw) {
     const wdRaw = (row[weekdayCol] ?? "").toString().trim().toLowerCase();
     const wd = weekdayMap.get(wdRaw);
     if (!wd) continue;
+
     for (const y of yearCols) {
       const vRaw = row[y];
       const v = vRaw === "" || vRaw == null ? NaN : +vRaw;
       if (!Number.isNaN(v)) longData.push({ year: +y, weekday: wd, value: v });
     }
   }
+
   if (!longData.length) {
     container.append("p").text("No data found after reading the CSV.");
     return;
@@ -72,131 +86,50 @@
   const minYear = d3.min(allYears);
   const maxYear = d3.max(allYears);
 
-  // Car + grid layout constants
-  const carWidth = 1200;
-  const carHeight = 620;
+  // ---------- Main heatmap SVG ----------
+  const margin = { top: 60, right: 40, bottom: 20, left: 80 };
+  const width = 960;
+  const height = 480;
 
-  const gridWidth = 540;
-  const gridHeight = 260;
-  const gridOriginX = (carWidth - gridWidth) / 2;
-  const gridOriginY = 220;
-  const weekdayLabelYOffset = -30;
-  const yearLabelX = gridOriginX - 52;
+  const svg = container.append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
 
-  const cabinPath = [
-    "M280 240",
-    "Q312 160 440 150",
-    "L760 150",
-    "Q844 160 910 222",
-    "L940 260",
-    "Q956 276 956 298",
-    "L956 480",
-    "Q956 496 940 496",
-    "L328 496",
-    "Q312 496 304 478",
-    "L264 398",
-    "Q250 368 280 240",
-    "Z"
-  ].join(" ");
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const bodyOutlinePath = [
-    "M140 340",
-    "Q168 256 240 230",
-    "Q320 118 500 110",
-    "L780 108",
-    "Q930 116 1010 222",
-    "L1062 244",
-    "Q1140 276 1140 360",
-    "L1140 490",
-    "Q1140 510 1118 510",
-    "L908 510",
-    "Q880 580 796 580",
-    "Q712 580 684 510",
-    "L516 510",
-    "Q488 580 404 580",
-    "Q320 580 292 510",
-    "L224 510",
-    "Q140 510 140 420",
-    "Z"
-  ].join(" ");
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
 
-  // Wrapper + SVG scaffold
-  const carWrapper = container.append("div").attr("class", "car-wrapper");
-
-  const svg = carWrapper.append("svg")
-    .attr("class", "car-svg")
-    .attr("viewBox", `0 0 ${carWidth} ${carHeight}`)
-    .attr("preserveAspectRatio", "xMidYMid meet")
-    .attr("role", "img")
-    .attr("aria-label", "Heatmap of collisions inside a car icon");
-
-  // Helper: clone the current heatmap SVG into the mini phone preview
-  function updateMiniPreview() {
-    if (miniContainer.empty()) return;      // if not present, do nothing
-    const svgNode = svg.node();
-    if (!svgNode) return;
-
-    const clone = svgNode.cloneNode(true);  // deep clone
-    miniContainer.html("");
-    miniContainer.node().appendChild(clone);
-  }
-
-  const defs = svg.append("defs");
-  defs.append("clipPath")
-    .attr("id", "car-body-clip")
-    .append("path")
-    .attr("d", cabinPath);
-
-  // Cabin background
-  const cabinLayer = svg.append("g").attr("id", "cabin-layer");
-  cabinLayer.append("path")
-    .attr("class", "car-cabin")
-    .attr("d", cabinPath);
-
-  // Heatmap + grid clipped to cabin
-  const heatmapLayer = svg.append("g")
-    .attr("id", "heatmap-layer")
-    .attr("clip-path", "url(#car-body-clip)");
-
-  const gridG = heatmapLayer.append("g").attr("class", "grid");
-  const cellsG = heatmapLayer.append("g");
-
-  // Labels (not clipped so they can sit slightly outside)
-  const labelsLayer = svg.append("g").attr("id", "labels-layer");
-  const yearsG = labelsLayer.append("g").attr("class", "year-labels");
-  const weekdayLabelsG = labelsLayer.append("g").attr("class", "weekday-labels");
-
-  // Car outline (stroke only) and wheels
-  const outlineLayer = svg.append("g").attr("id", "car-outline-layer");
-  outlineLayer.append("path")
-    .attr("class", "car-body-outline")
-    .attr("d", bodyOutlinePath);
-
-  // Scales
   const x = d3.scaleBand()
     .domain(weekdayOrder)
-    .range([gridOriginX, gridOriginX + gridWidth])
+    .range([0, innerWidth])
     .paddingInner(0.12)
     .paddingOuter(0.06);
 
-  weekdayLabelsG.selectAll("text")
-    .data(weekdayOrder)
-    .join("text")
-    .attr("class", "weekday-label")
-    .attr("x", d => x(d) + x.bandwidth() / 2)
-    .attr("y", gridOriginY + weekdayLabelYOffset)
-    .attr("text-anchor", "middle")
-    .attr("alignment-baseline", "middle")
-    .attr("dominant-baseline", "middle")
-    .text(d => d.toUpperCase());
+  const y = d3.scaleBand()
+    .domain(allYears)
+    .range([0, innerHeight])
+    .paddingInner(0.18)
+    .paddingOuter(0.16);
 
-  // Color scale
   const values = longData.map(d => d.value);
   const vmin = d3.min(values);
   const vmax = d3.max(values);
   const color = d3.scaleSequential([vmin, vmax], d3.interpolateYlOrRd);
 
-  // Tooltip
+  // Axes  (x-axis uses SHORT labels)
+  const xAxis = d3.axisTop(x).tickFormat(d => weekdayShort[d] || d);
+  const yAxis = d3.axisLeft(y).tickValues(allYears);
+
+  g.append("g")
+    .attr("class", "axis axis--x")
+    .call(xAxis);
+
+  g.append("g")
+    .attr("class", "axis axis--y")
+    .call(yAxis);
+
+  // ---------- Tooltip ----------
   const tooltip = d3.select("body").append("div").attr("class", "tooltip");
   const show = (event, d) => {
     tooltip.html(`<strong>${d.weekday}</strong>, ${d.year}<br/>Value: ${valueFormat(d.value)}`)
@@ -209,39 +142,26 @@
 
   const T = () => d3.transition().duration(200).ease(d3.easeQuadOut);
 
+  const cellsG = g.append("g").attr("class", "cells");
+  const gridG = g.append("g").attr("class", "grid");
+
+  // ---------- Mini preview (phone) ----------
+  function updateMiniPreview() {
+    return;
+  }
+
+  // ---------- Update function ----------
   function updateYears(yearSubset, animate = true) {
     if (!yearSubset || !yearSubset.length) yearSubset = allYears;
 
-    const y = d3.scaleBand()
-      .domain(yearSubset)
-      .range([gridOriginY, gridOriginY + gridHeight])
-      .paddingInner(0.18)
-      .paddingOuter(0.16);
+    y.domain(yearSubset);
 
-    const yearLabels = yearsG.selectAll("text").data(yearSubset, d => d);
-    yearLabels.join(
-      enter => enter.append("text")
-        .attr("class", "year-label")
-        .attr("x", yearLabelX)
-        .attr("y", d => y(d) + y.bandwidth() / 2)
-        .attr("text-anchor", "end")
-        .attr("alignment-baseline", "middle")
-        .attr("dominant-baseline", "middle")
-        .style("opacity", animate ? 0 : 1)
-        .text(d => d)
-        .call(sel => animate ? sel.transition(T()).style("opacity", 1) : sel),
-      update => {
-        const target = animate ? update.transition(T()) : update;
-        return target
-          .style("opacity", 1)
-          .attr("x", yearLabelX)
-          .attr("y", d => y(d) + y.bandwidth() / 2);
-      },
-      exit => animate
-        ? exit.transition(T()).style("opacity", 0).remove()
-        : exit.remove()
-    );
+    // Axis
+    const ySel = g.select(".axis--y");
+    (animate ? ySel.transition(T()) : ySel)
+      .call(d3.axisLeft(y).tickValues(yearSubset));
 
+    // Data
     const data = longData
       .filter(d => yearSubset.includes(d.year))
       .sort((a, b) => a.year - b.year || weekdayOrder.indexOf(a.weekday) - weekdayOrder.indexOf(b.weekday));
@@ -255,7 +175,7 @@
         .attr("y", d => y(d.year))
         .attr("width", x.bandwidth())
         .attr("height", y.bandwidth())
-        .attr("rx", 6).attr("ry", 6)
+        .attr("rx", 4).attr("ry", 4)
         .attr("fill", d => color(d.value))
         .style("opacity", animate ? 0 : 1)
         .on("mouseenter", show)
@@ -288,50 +208,40 @@
         .style("opacity", 1);
     }
 
-    const verticalEdges = weekdayOrder.flatMap(day => {
-      const start = x(day);
-      return [start, start + x.bandwidth()];
-    });
-    verticalEdges.push(gridOriginX, gridOriginX + gridWidth);
-
+    // Vertical grid lines
     gridG.selectAll("line.grid-v")
-      .data(Array.from(new Set(verticalEdges)).sort((a, b) => a - b))
+      .data(weekdayOrder)
       .join(
         enter => enter.append("line").attr("class", "grid-line grid-v"),
         update => update,
         exit => exit.remove()
       )
-      .attr("x1", d => d)
-      .attr("x2", d => d)
-      .attr("y1", gridOriginY)
-      .attr("y2", gridOriginY + gridHeight);
+      .attr("x1", d => x(d))
+      .attr("x2", d => x(d))
+      .attr("y1", 0)
+      .attr("y2", innerHeight);
 
-    const horizontalEdges = yearSubset.flatMap(year => {
-      const top = y(year);
-      return [top, top + y.bandwidth()];
-    });
-    horizontalEdges.push(gridOriginY, gridOriginY + gridHeight);
-
+    // Horizontal grid lines
     gridG.selectAll("line.grid-h")
-      .data(Array.from(new Set(horizontalEdges)).sort((a, b) => a - b))
+      .data(yearSubset)
       .join(
         enter => enter.append("line").attr("class", "grid-line grid-h"),
         update => update,
         exit => exit.remove()
       )
-      .attr("x1", gridOriginX)
-      .attr("x2", gridOriginX + gridWidth)
-      .attr("y1", d => d)
-      .attr("y2", d => d);
+      .attr("x1", 0)
+      .attr("x2", innerWidth)
+      .attr("y1", d => y(d))
+      .attr("y2", d => y(d));
+
+    // // Keep mini preview in sync
+    // updateMiniPreview();
   }
 
-  // Initial render (latest five years)
-  const defaultYears = allYears.slice(-Math.min(5, allYears.length));
-  const defaultStartYear = defaultYears[0];
-  const defaultEndYear = defaultYears[defaultYears.length - 1];
-  updateYears(defaultYears, false);
+  // Initial render: all years
+  updateYears(allYears, false);
 
-  // Year range controls / timeline
+  // ---------- Year range slider / brush ----------
   const timelineContainer = rangeContainer.append("div").attr("class", "timeline-container");
 
   const rangeHeader = timelineContainer.append("div")
@@ -339,15 +249,15 @@
 
   const rangeLabel = rangeHeader.append("div")
     .attr("class", "range-label-text")
-    .text(`Years selected: ${defaultStartYear === defaultEndYear ? defaultEndYear : `${defaultStartYear}–${defaultEndYear}`}`);
+    .text(`Years selected: ${minYear}–${maxYear}`);
 
   const controls = rangeHeader.append("div").attr("class", "year-range-controls");
   const selectAllBtn = controls.append("button").attr("type", "button").text("Check all years");
   const resetBtn = controls.append("button").attr("type", "button").text("Reset");
 
-  const brushWidth = Math.max(800, gridWidth + 320);
-  const brushHeight = 120;
-  const sliderPadding = 100;
+  const brushWidth = 800;
+  const brushHeight = 100;
+  const sliderPadding = 40;
 
   const brushSvg = timelineContainer.append("svg")
     .attr("class", "year-range-svg")
@@ -375,8 +285,9 @@
     .on("end", brushended);
 
   const brushSel = brushG.append("g").attr("class", "brush").call(brush);
+
   const yearsToSelection = (start, end) => [xYear(start), xYear(end)];
-  brushSel.call(brush.move, yearsToSelection(defaultStartYear, defaultEndYear));
+  brushSel.call(brush.move, yearsToSelection(minYear, maxYear));
 
   function updateRangeLabel(y0, y1) {
     const lo = Math.min(y0, y1);
@@ -394,19 +305,25 @@
 
   function brushended({ selection, sourceEvent }) {
     if (!selection) return;
+
     let [x0, x1] = selection;
     let y0 = Math.round(xYear.invert(x0));
     let y1 = Math.round(xYear.invert(x1));
+
     if (y0 > y1) [y0, y1] = [y1, y0];
     y0 = Math.max(minYear, Math.min(maxYear, y0));
     y1 = Math.max(minYear, Math.min(maxYear, y1));
+
     updateRangeLabel(y0, y1);
     const snapped = yearsToSelection(y0, y1);
+
+    // keep brush + heatmap in sync without recursive loops
     if (sourceEvent) {
       d3.select(this).transition().duration(140).call(brush.move, snapped);
     } else if (selection[0] !== snapped[0] || selection[1] !== snapped[1]) {
       brushSel.call(brush.move, snapped);
     }
+
     updateYears(d3.range(y0, y1 + 1));
   }
 
@@ -416,35 +333,54 @@
     const lo = Math.min(clampedStart, clampedEnd);
     const hi = Math.max(clampedStart, clampedEnd);
     brushSel.call(brush.move, yearsToSelection(lo, hi));
+    updateYears(d3.range(lo, hi + 1));
   }
 
   selectAllBtn.on("click", () => moveToRange(minYear, maxYear));
-  resetBtn.on("click", () => moveToRange(defaultStartYear, defaultEndYear));
+  resetBtn.on("click", () => moveToRange(maxYear - 5, maxYear));
 
-  // Legend remains same
-  renderLegend(legendContainer, color, vmin, vmax, brushWidth + sliderPadding * 2);
+  // ---------- Legend ----------
+  renderLegend(legendContainer, color, vmin, vmax, width);
+
   function renderLegend(containerSel, colorScale, vminLocal, vmaxLocal, desiredWidth) {
     containerSel.selectAll("*").remove();
-    containerSel.append("div").attr("class", "title").text("Value scale");
+
+    containerSel.append("div")
+      .attr("class", "title")
+      .text("Value scale");
+
     const legendWidth = desiredWidth || Math.min(600, (containerSel.node().clientWidth || 600));
     const legendHeight = 52;
     const marginL = { top: 8, right: 12, bottom: 24, left: 12 };
-    const svgL = containerSel.append("svg").attr("viewBox", [0, 0, legendWidth, legendHeight].join(" "));
+
+    const svgL = containerSel.append("svg")
+      .attr("viewBox", [0, 0, legendWidth, legendHeight].join(" "));
+
     const w = legendWidth - marginL.left - marginL.right;
     const gL = svgL.append("g").attr("transform", `translate(${marginL.left},${marginL.top})`);
+
     const xL = d3.scaleLinear().domain([vminLocal, vmaxLocal]).range([0, w]);
+
     const n = 256;
     const data = d3.range(n).map(i => d3.interpolateNumber(vminLocal, vmaxLocal)(i / (n - 1)));
-    gL.selectAll("rect").data(data).join("rect")
-      .attr("x", d => xL(d)).attr("y", 0).attr("width", w / n + 1).attr("height", 16)
+
+    gL.selectAll("rect")
+      .data(data)
+      .join("rect")
+      .attr("x", d => xL(d))
+      .attr("y", 0)
+      .attr("width", w / n + 1)
+      .attr("height", 16)
       .attr("fill", d => colorScale(d));
+
     const axisLegend = d3.axisBottom(xL).ticks(5).tickSizeOuter(0);
-    gL.append("g").attr("transform", "translate(0,18)").attr("class", "axis").call(axisLegend);
+
+    gL.append("g")
+      .attr("transform", "translate(0,18)")
+      .attr("class", "axis")
+      .call(axisLegend);
   }
 
-  // Initial preview render (if phone preview exists)
-  updateMiniPreview();
-
-  // When modal closes, refresh the mini preview
+  // Allow panels.js to refresh mini when modal closes
   document.addEventListener("heatmap-update-mini", updateMiniPreview);
 })();

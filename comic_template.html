@@ -1,199 +1,215 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<title>Car Crash Comic</title>
-<meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="css/template_style.css" rel="stylesheet"/>
-<link href="css/heatmap.css" rel="stylesheet"/> <!-- add this -->
-</meta></head>
+    <meta charset="utf-8" />
+    <title>Car Crash Comic</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/template_style.css" rel="stylesheet" />
+    <link href="css/heatmap.css" rel="stylesheet" /> <!-- add this -->
+    </meta>
+</head>
+
 <body class="comic-reader-body">
-<!-- Opening instruction overlay -->
-<div class="intro-overlay" id="intro-overlay">
-<div class="intro-card">
-<p class="intro-title">You are in panel-to-panel reading mode</p>
-<button class="intro-main-btn" id="intro-main-btn" type="button">
-<span>READ FROM LEFT TO RIGHT</span>
-<span class="intro-main-arrow">→</span>
-</button>
-<p class="intro-subtitle">
+    <!-- Opening instruction overlay -->
+    <div class="intro-overlay" id="intro-overlay">
+        <div class="intro-card">
+            <p class="intro-title">You are in panel-to-panel reading mode</p>
+            <button class="intro-main-btn" id="intro-main-btn" type="button">
+                <span>READ FROM LEFT TO RIGHT</span>
+                <span class="intro-main-arrow">→</span>
+            </button>
+            <p class="intro-subtitle">
                 Tap the left and right sides of the screen to move between pages.
             </p>
-</div>
-</div>
-<div class="comic-reader">
-<!-- Left full-height button -->
-<button class="nav-btn nav-btn-left" id="prev-btn" type="button">
-<span>Previous page</span>
-</button>
-<!-- Center panel area -->
-<main class="panel-wrapper">
-<!-- Panel 0 -->
-<section class="comic-panel active">
-<div class="panel-inner">
-<img alt="Panel 0" src="img/panel0.png"/>
-</div>
-</section>
-<!-- Panel 1 -->
-<section class="comic-panel active">
-<div class="panel-inner">
-<img alt="Panel 1" src="img/panel1.png"/>
-</div>
-<div class="panel-caption">
+        </div>
+    </div>
+    <div class="comic-reader">
+        <!-- Left full-height button -->
+        <button class="nav-btn nav-btn-left" id="prev-btn" type="button">
+            <span>Previous page</span>
+        </button>
+        <!-- Center panel area -->
+        <main class="panel-wrapper">
+            <!-- Panel 0 -->
+            <section class="comic-panel active">
+                <div class="panel-inner">
+                    <img alt="Panel 0" src="img/panel0.png" />
+                </div>
+            </section>
+            <!-- Panel 1 -->
+            <section class="comic-panel active">
+                <div class="panel-inner">
+                    <img alt="Panel 1" src="img/panel1.png" />
+                </div>
+                <div class="panel-caption">
                     "A brand-new day begins as our driver slowly wakes up."
                 </div>
-</section>
-<!-- Panel 2 – heatmap page -->
-<section class="comic-panel">
-<div class="panel-inner">
-<div class="panel-phone-wrapper">
-<!-- Background comic art with the phone -->
-<img alt="Heatmap on phone preview" class="panel-phone-image" src="img/panel2.png"/>
-<!-- Mini preview area on the phone (click to open modal) -->
-<div class="phone-screen chart-thumb" data-modal-target="#heatmap-modal">
-<div class="phone-heatmap-mini" id="heatmap-mini"></div>
-</div>
-</div>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 2 – heatmap page -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <div class="panel-phone-wrapper">
+                        <!-- Background comic art with the phone -->
+                        <img alt="Heatmap on phone preview" class="panel-phone-image" src="img/panel2.png" />
+                        <!-- Mini preview area on the phone (click to open modal) -->
+                        <div class="phone-screen chart-thumb" data-modal-target="#heatmap-modal">
+                            <div class="phone-heatmap-mini" id="heatmap-mini">
+                                <img src="img/car_background.png" class="mini-car-img" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-caption">
                     He checks his phone to see which days are safest to travel. Tap the phone to explore.
                 </div>
-</section>
-<!-- Panel 3 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 3" src="img/panel3.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 3 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 3" src="img/panel3.png" />
+                </div>
+                <div class="panel-caption">
                     While brushing his teeth, he wonders which time of day is safest. Tap the clock.
                 </div>
-</section>
-<!-- Panel 4 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 4" src="img/panel4.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 4 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 4" src="img/panel4.png" />
+                </div>
+                <div class="panel-caption">
                     He steps outside, ready to start his journey to work.
                 </div>
-</section>
-<!-- Panel 5 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 5" src="img/panel5.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 5 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 5" src="img/panel5.png" />
+                </div>
+                <div class="panel-caption">
                     With a turn of the key, the engine hums to 9-to-5 life.
                 </div>
-</section>
-<!-- Panel 6 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 6" src="img/panel6.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 6 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 6" src="img/panel6.png" />
+                </div>
+                <div class="panel-caption">
                     A speed-limit sign reminds him how speed affects safety. Tap the sign.
                 </div>
-</section>
-<!-- Panel 7 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 7" src="img/panel7.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 7 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 7" src="img/panel7.png" />
+                </div>
+                <div class="panel-caption">
                     Different roads lie ahead, each with its own risks. Tap the navigation display.
                 </div>
-</section>
-<!-- Panel 8 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 8" src="img/panel8.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 8 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 8" src="img/panel8.png" />
+                </div>
+                <div class="panel-caption">
                     He reaches work safely and gets ready for the day.
                 </div>
-</section>
-<!-- Panel 9 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 9" src="img/panel9.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 9 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 9" src="img/panel9.png" />
+                </div>
+                <div class="panel-caption">
                     His mind wanders... maybe a vacation would be nice.
                 </div>
-</section>
-<!-- Panel 10 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 10" src="img/panel10.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 10 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 10" src="img/panel10.png" />
+                </div>
+                <div class="panel-caption">
                     He checks the calendar to find the safest month for a trip. Tap the calendar.
                 </div>
-</section>
-<!-- Panel 11 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 11" src="img/panel11.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 11 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 11" src="img/panel11.png" />
+                </div>
+                <div class="panel-caption">
                     He asks his boss about taking some time off.
                 </div>
-</section>
-<!-- Panel 12 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 12" src="img/panel12.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 12 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 12" src="img/panel12.png" />
+                </div>
+                <div class="panel-caption">
                     Great news! His vacation is approved.
                 </div>
-</section>
-<!-- Panel 13 -->
-<section class="comic-panel">
-<div class="panel-inner">
-<img alt="Panel 13" src="img/panel13.png"/>
-</div>
-<div class="panel-caption">
+            </section>
+            <!-- Panel 13 -->
+            <section class="comic-panel">
+                <div class="panel-inner">
+                    <img alt="Panel 13" src="img/panel13.png" />
+                </div>
+                <div class="panel-caption">
                     With everything planned, he drives into his long-awaited adventure.
                 </div>
-</section>
-<!-- Panel 14 -->
-<section class="comic-panel active">
-<div class="panel-inner">
-<img alt="Panel 14" src="img/panel14.png"/>
-</div>
-</section>
-</main>
-<!-- Right full-height button -->
-<button class="nav-btn nav-btn-right" id="next-btn" type="button">
-<span>Next page</span>
-</button>
-</div>
-<!-- Heatmap modal with full interactive heatmap -->
-<div class="chart-modal" id="heatmap-modal">
-<div class="chart-modal-backdrop"></div>
-<div class="chart-modal-content">
-<!-- Title -->
-<div class="modal-title-box">
-<h2 class="modal-title">Collisions by Weekday and Year</h2>
-<p class="modal-subtitle">Explore trends over time and compare weekdays.</p>
-</div>
-<section class="heatmap-card">
-<div class="heatmap-main" id="heatmap"></div>
-<div class="heatmap-year-range" id="year-range"></div>
-<div class="heatmap-legend" id="legend"></div>
-</section>
-</div>
-</div>
-<!-- D3 + heatmap logic -->
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="js/calendar-heatmap.js"></script>
-<!-- Panel + overlay + modal logic -->
-<script src="js/panels.js"></script>
-</body>
-</html>
+            </section>
+            <!-- Panel 14 -->
+            <section class="comic-panel active">
+                <div class="panel-inner">
+                    <img alt="Panel 14" src="img/panel14.png" />
+                </div>
+            </section>
+        </main>
+        <!-- Right full-height button -->
+        <button class="nav-btn nav-btn-right" id="next-btn" type="button">
+            <span>Next page</span>
+        </button>
+    </div>
+    <!-- Heatmap modal with full interactive heatmap -->
+    <div class="chart-modal" id="heatmap-modal">
+        <div class="chart-modal-backdrop"></div>
+        <div class="chart-modal-content">
+            <!-- Title -->
+            <div class="modal-title-box">
+                <h2 class="modal-title">Collisions by Weekday and Year</h2>
+                <p class="modal-subtitle">Explore trends over time and compare weekdays.</p>
+            </div>
+            <section class="heatmap-card">
+                <!-- Car background + floating heatmap panel -->
+                <section class="car-section">
+                    <img src="img/car_background.png" class="car-fullwidth" alt="Collisions heatmap over car" />
+                    <div class="heatmap-floating-panel">
+                        <div id="heatmap" class="chart"></div>
+                    </div>
+                </section>
 
+                <!-- Controls + legend panel below the car -->
+                <section class="controls-section">
+                    <div id="year-range" class="year-range"></div>
+                    <div id="legend" class="legend"></div>
+                </section>
+            </section>
+
+        </div>
+    </div>
+    <!-- D3 + heatmap logic -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="js/calendar-heatmap.js"></script>
+    <!-- Panel + overlay + modal logic -->
+    <script src="js/panels.js"></script>
+</body>
+
+</html>
