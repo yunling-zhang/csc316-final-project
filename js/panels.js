@@ -76,6 +76,11 @@
     function closeModal(modal) {
         if (!modal) return;
         modal.classList.remove('open');
+
+        // If this is the heatmap modal, refresh the mini phone preview in Panel 2
+        if (modal.id === 'heatmap-modal') {
+            document.dispatchEvent(new Event('heatmap-update-mini'));
+        }
     }
 
     modalTriggers.forEach(trigger => {
