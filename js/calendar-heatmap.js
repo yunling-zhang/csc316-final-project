@@ -2,6 +2,8 @@
   const container = d3.select("#heatmap").html("");
   const legendContainer = d3.select("#legend");
   const rangeContainer = d3.select("#year-range").html("");
+  const miniContainer = d3.select("#heatmap-mini");  // may be empty if not on this page
+
 
   // Load CSV
   let raw;
@@ -127,6 +129,17 @@
     .attr("preserveAspectRatio", "xMidYMid meet")
     .attr("role", "img")
     .attr("aria-label", "Heatmap of collisions inside a car icon");
+
+  // Helper: clone the current heatmap SVG into the mini phone preview
+  function updateMiniPreview() {
+    if (miniContainer.empty()) return;      // if not present, do nothing
+    const svgNode = svg.node();
+    if (!svgNode) return;
+
+    const clone = svgNode.cloneNode(true);  // deep clone
+    miniContainer.html("");
+    miniContainer.node().appendChild(clone);
+  }
 
   const defs = svg.append("defs");
   defs.append("clipPath")
@@ -428,4 +441,10 @@
     const axisLegend = d3.axisBottom(xL).ticks(5).tickSizeOuter(0);
     gL.append("g").attr("transform", "translate(0,18)").attr("class", "axis").call(axisLegend);
   }
+
+  // Initial preview render (if phone preview exists)
+  updateMiniPreview();
+
+  // When modal closes, refresh the mini preview
+  document.addEventListener("heatmap-update-mini", updateMiniPreview);
 })();
