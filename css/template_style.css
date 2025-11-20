@@ -1,0 +1,548 @@
+/* ===== Base full-screen layout ===== */
+body.comic-reader-body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Main layout: left button / center / right button */
+.comic-reader {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Side navigation buttons */
+.nav-btn {
+    flex: 0 0 18vw;
+    border: none;
+    background: transparent;
+    color: #ffb57a;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s ease, transform 0.1s ease, color 0.2s ease;
+}
+
+.nav-btn-left {
+    border-right: 1px dashed rgba(255, 181, 122, 0.4);
+}
+
+.nav-btn-right {
+    border-left: 1px dashed rgba(255, 181, 122, 0.4);
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: rgba(255, 181, 122, 0.1);
+    transform: scale(1.02);
+}
+
+.nav-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+/* Center panel area */
+.panel-wrapper {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Each comic page fills viewport height */
+.comic-panel {
+    position: absolute;
+    inset: 0;
+    height: 100vh;
+    width: 100%;
+    display: none;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.comic-panel.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Inner content of a panel */
+.panel-inner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* overflow: hidden; */
+}
+
+/* Comic images scale to fit page */
+.panel-inner img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* Subtitle-like caption box */
+.panel-caption {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 32px;
+    max-width: 75%;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 16px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: #fff;
+    pointer-events: none;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Opening instruction overlay */
+.intro-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.35s ease;
+}
+
+.intro-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.intro-card {
+    text-align: center;
+    color: #ffc896;
+    max-width: 520px;
+    padding: 32px 40px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 28px;
+    box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
+}
+
+.intro-title {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+}
+
+.intro-main-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    border: none;
+    background: #ff6a1a;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 24px;
+}
+
+.intro-main-arrow {
+    font-size: 1.2rem;
+}
+
+.intro-main-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.intro-subtitle {
+    font-size: 0.95rem;
+    margin: 0;
+    color: #ffd8aa;
+}
+
+/* Chart modal (used by heatmap and future charts) */
+.chart-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+}
+
+.chart-modal.open {
+    display: flex;
+}
+
+.chart-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.chart-modal-content {
+    position: relative;
+    max-width: 950px;
+    width: 92%;
+    max-height: 90vh;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 22px 16px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.85);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* overflow: hidden; */
+}
+
+/* Iframe that hosts heatmap.html */
+.chart-iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    border-radius: 12px;
+    background: #111;
+}
+
+/* Thumbnail on comic page */
+.chart-thumb {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-thumb-img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 26px rgba(0, 0, 0, 0.85);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.chart-thumb-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 34px rgba(0, 0, 0, 0.95);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .nav-btn {
+        flex-basis: 15vw;
+        font-size: 0.85rem;
+        padding: 0 4px;
+    }
+
+    .panel-caption {
+        font-size: 1rem;
+        max-width: 82%;
+        padding: 12px 16px;
+    }
+
+    .intro-card {
+        max-width: 90%;
+        padding: 24px 20px;
+    }
+
+    .intro-title {
+        font-size: 1.05rem;
+    }
+
+    .intro-main-btn {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+    }
+
+    .chart-modal-content {
+        width: 96%;
+        padding: 16px;
+    }
+}
+
+/* Panel 2 specific: phone with mini visualization preview */
+.panel-phone-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-phone-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Approximate phone screen area – tweak percentages to align with your artwork */
+.phone-screen {
+    position: absolute;
+    top: 62%;
+    left: 50%;
+    width: 32%;
+    height: 24%;
+    transform: translate(-50%, -50%);
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.phone-screen-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+}
+
+
+/* Panel 2 specific: phone with mini visualization preview */
+.panel-phone-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-phone-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Approximate phone screen area – tweak these to line up with your drawing */
+.phone-screen {
+    position: absolute;
+    top: 60%;
+    /* move up/down */
+    left: 32%;
+    /* move left/right */
+    width: 17%;
+    /* phone screen width */
+    height: 15%;
+    /* phone screen height */
+    transform: translate(-50%, -50%);
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.phone-screen-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+}
+
+/* Panel 2: phone with mini interactive heatmap */
+.panel-phone-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-phone-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Phone screen area: adjust percentages to line up with the art */
+.phone-screen {
+    position: absolute;
+    top: 60%;
+    /* move up/down */
+    left: 32%;
+    /* move left/right */
+    width: 17%;
+    /* phone screen width */
+    height: 15%;
+    /* phone screen height */
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+    background: #111;
+}
+
+.phone-screen-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Panel 2: phone with mini heatmap preview */
+.panel-phone-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-phone-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Phone screen area – tweak to match your drawing */
+.phone-screen {
+    position: absolute;
+    top: 59%;
+    /* move up/down */
+    left: 32%;
+    /* move left/right */
+    width: 17%;
+    /* phone screen width */
+    height: 15%;
+    /* phone screen height */
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+    background: #fff;
+    cursor: pointer;
+}
+
+/* The SVG clone will be placed inside here */
+.phone-heatmap-mini svg {
+    width: 100%;
+    height: 100%;
+}
+
+.modal-title-box {
+    width: 100%;
+    padding: 16px 0 8px;
+    text-align: center;          /* center everything */
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;                 /* pure black */
+    text-align: center;          /* redundant but safe */
+}
+
+.modal-subtitle {
+    margin: 6px 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #333;                 /* dark gray */
+    text-align: center;          /* centered */
+}
+
+.chart-modal-content {
+    position: relative;
+    max-width: 1050px;
+    width: 96%;
+    max-height: 95vh;          /* give it a bit more vertical room */
+    background: #ffffff;       /* white card */
+    border-radius: 18px;
+    padding: 16px 24px 16px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;          /* allow vertical scroll if still needed */
+    overflow-x: hidden;
+}
+
+/* Slightly tighter spacing in the heatmap card when inside the modal */
+.heatmap-card {
+    padding-bottom: 12px;
+}
+
+.heatmap-legend {
+    margin-bottom: 0;
+}
+
+.chart-modal-content {
+    position: relative;
+    max-width: 1100px;
+    width: 100vw;          /* can use most of the screen width */
+    max-height: 100vh;     /* not larger than viewport */
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px 24px 24px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: visible;     /* important: let scaled content overflow inside */
+}
+
+.chart-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    overflow: hidden;      /* no scroll on background */
+}
+
+.heatmap-card {
+    transform-origin: top center;  /* scaling will happen from the top center */
+}
+
+/* iframe inside phone preview */
+.phone-screen-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* iframe inside zoomed modal */
+.chart-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 18px;
+}
+
+/* When heatmap.html is opened with ?mode=mini */
+body.mini-mode .modal-title-box,
+body.mini-mode .heatmap-year-range,
+body.mini-mode .heatmap-legend {
+  display: none;
+}
+
+body.mini-mode .heatmap-card {
+  padding: 4px 4px 6px;
+}
