@@ -446,31 +446,38 @@ body.comic-reader-body {
 .modal-title-box {
     width: 100%;
     padding: 16px 0 8px;
-    text-align: center;          /* center everything */
+    text-align: center;
+    /* center everything */
 }
 
 .modal-title {
     margin: 0;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #000;                 /* pure black */
-    text-align: center;          /* redundant but safe */
+    color: #000;
+    /* pure black */
+    text-align: center;
+    /* redundant but safe */
 }
 
 .modal-subtitle {
     margin: 6px 0 0;
     font-size: 1rem;
     font-weight: 400;
-    color: #333;                 /* dark gray */
-    text-align: center;          /* centered */
+    color: #333;
+    /* dark gray */
+    text-align: center;
+    /* centered */
 }
 
 .chart-modal-content {
     position: relative;
     max-width: 1050px;
     width: 96%;
-    max-height: 95vh;          /* give it a bit more vertical room */
-    background: #ffffff;       /* white card */
+    max-height: 95vh;
+    /* give it a bit more vertical room */
+    background: #ffffff;
+    /* white card */
     border-radius: 18px;
     padding: 16px 24px 16px;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
@@ -478,7 +485,8 @@ body.comic-reader-body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    overflow-y: auto;          /* allow vertical scroll if still needed */
+    overflow-y: auto;
+    /* allow vertical scroll if still needed */
     overflow-x: hidden;
 }
 
@@ -494,8 +502,10 @@ body.comic-reader-body {
 .chart-modal-content {
     position: relative;
     max-width: 1100px;
-    width: 100vw;          /* can use most of the screen width */
-    max-height: 100vh;     /* not larger than viewport */
+    width: 100vw;
+    /* can use most of the screen width */
+    max-height: 100vh;
+    /* not larger than viewport */
     background: #ffffff;
     border-radius: 18px;
     padding: 16px 24px 24px;
@@ -504,7 +514,8 @@ body.comic-reader-body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    overflow: visible;     /* important: let scaled content overflow inside */
+    overflow: visible;
+    /* important: let scaled content overflow inside */
 }
 
 .chart-modal {
@@ -514,35 +525,47 @@ body.comic-reader-body {
     align-items: center;
     justify-content: center;
     z-index: 1200;
-    overflow: hidden;      /* no scroll on background */
+    overflow: hidden;
+    /* no scroll on background */
 }
 
 .heatmap-card {
-    transform-origin: top center;  /* scaling will happen from the top center */
+    transform-origin: top center;
+    /* scaling will happen from the top center */
 }
 
 /* iframe inside phone preview */
 .phone-screen-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 /* iframe inside zoomed modal */
 .chart-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 18px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 18px;
 }
 
 /* When heatmap.html is opened with ?mode=mini */
 body.mini-mode .modal-title-box,
 body.mini-mode .heatmap-year-range,
 body.mini-mode .heatmap-legend {
-  display: none;
+    display: none;
 }
 
 body.mini-mode .heatmap-card {
-  padding: 4px 4px 6px;
+    padding: 4px 4px 6px;
+}
+
+/* Mini preview image inside the phone */
+.phone-heatmap-mini .mini-car-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* fills the phone screen */
+    border-radius: 6px;
+    display: block;
 }
