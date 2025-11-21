@@ -14,6 +14,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="z_individual_visuals/clockVis/css/clockVis.css">
 </head>
 
 <body>
@@ -89,7 +90,29 @@
 
             <div class="chart-content chart-content--clock">
                 <h2 class="chart-title">When during the day is crash risk highest?</h2>
-                <div id="clock-visualization"></div>
+                <div id="clock-visualization">
+                    <!-- Main flexbox container -->
+                    <div class="clock-main-container">
+                        <!-- Clock container (left side) -->
+                        <div class="clock-container">
+                            <!-- Button container -->
+                            <div class="clock-buttons">
+                                <button id="day-mode-btn" class="btn btn-primary">☀️ Night ~ Morning (12am-12pm)</button>
+                                <button id="night-mode-btn" class="btn btn-outline-primary">🌙 Afternoon ~ Night (12pm-12am)</button>
+                            </div>
+                            <!-- Clock SVG will be inserted here -->
+                            <!-- Legend container -->
+                            <div class="clock-legend">
+                                <!-- Legend SVG will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Line chart container (right side) -->
+                        <div class="line-chart-container">
+                            <!-- Line chart SVG will be inserted here -->
+                        </div>
+                    </div>
+                </div>
                 <div id="risk-banner"></div>
                 <div id="tooltip" style="position:absolute; pointer-events:none; display:none;"></div>
             </div>
@@ -272,7 +295,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <!-- JS -->
 <script src="js/speedLimitVisSigns.js"></script>
-<script src="js/clockVis.js"></script>
+<script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
 <script src="js/calendar-heatmap.js"></script>
 <script src="js/circularBarChart.js"></script>
 <script src="js/collision_by_roadtype.js"></script>
