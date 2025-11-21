@@ -43,62 +43,6 @@ h1 {
     font-family: "Inter", sans-serif;
 }
 
-/* ===========================
-   Clock Visualization (default card)
-   =========================== */
-#clock-visualization {
-    width: 100%;
-    max-width: 800px;
-    margin: 2rem auto;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    padding: 20px;
-}
-
-.hour-label {
-    font-family: "Inter", sans-serif;
-    fill: #333;
-}
-
-.hour-label.night {
-    fill: #495057;
-}
-
-.hour-tick,
-.inner-hour-tick {
-    stroke: #666;
-}
-
-.time-segment {
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-
-.time-segment:hover {
-    opacity: 1;
-    cursor: pointer;
-}
-
-/* Clock viz helpers */
-.time-segment.highlight {
-    stroke: #222 !important;
-    stroke-width: 2.5px !important;
-    filter: url(#glow);
-}
-.hour-label.current {
-    font-weight: 900;
-    text-decoration: underline;
-}
-
-.outer-circle,
-.inner-circle {
-    transition: fill 0.3s ease;
-}
-
-.outer-circle {
-    fill: #f8f9fa;
-}
 .inner-circle {
     fill: #e9ecef;
 }
@@ -537,7 +481,6 @@ h1 {
 
 .chart-panel .chart-mini,
 .chart-panel .chart-mini-sub,
-.chart-panel #clock-visualization,
 .chart-panel #car-speed-limit-crashes-vis-nathan {
     background: transparent;
 }
@@ -674,80 +617,6 @@ body.no-scroll {
     display: block;
 }
 
-/* Panel 3 – clock on bathroom wall */
-.panel-3 .chart-panel--clock {
-    left: 26%;       /* center of round mirror */
-    top: 18%;        /* center of mirror */
-    width: 32%;
-    transform: translate(-50%, -50%);
-}
-
-/* mini mode: remove default card styling */
-.panel-3 .chart-panel--clock #clock-visualization {
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
-}
-
-/* shrink entire SVG into mirror */
-.panel-3 .chart-panel--clock svg {
-    transform:translate(-30%, 12%)  scale(0.38);
-    transform-origin: center;
-}
-
-/* === Fix zoomed layout just for Panel 3 (clock) === */
-/* make sure the SVG itself cannot exceed the viewport AND remove mini scaling */
-.panel-3 .chart-panel--clock.is-zoomed #clock-visualization svg {
-    max-height: calc(100vh - 140px);
-    width: 100%;
-    height: auto;
-
-    /* NEW: reset the mini transform */
-    transform: none;              /* or: transform: translate(0, 0) scale(1); */
-    transform-origin: center;
-}
-
-
-/* keep the zoomed card within the viewport height */
-.panel-3 .chart-panel--clock.is-zoomed .chart-content--clock {
-    max-height: calc(100vh - 80px);
-}
-
-/* make sure the SVG itself cannot exceed the viewport */
-.panel-3 .chart-panel--clock.is-zoomed #clock-visualization svg {
-    max-height: calc(100vh - 140px);
-    width: 100%;
-    height: auto;
-}
-
-/* Panel 3 – hide risk banner + tooltip when inside the mirror */
-.panel-3 .chart-panel--clock #risk-banner,
-.panel-3 .chart-panel--clock #tooltip {
-    display: none !important;
-}
-
-.panel-3 .chart-panel--clock.is-zoomed #risk-banner {
-    display: block !important;   /* or flex; whichever it was before */
-}
-/* Panel 3 – hide title inside mirror, show only on zoom */
-.panel-3 .chart-panel--clock .chart-title {
-    display: none;
-}
-
-.panel-3 .chart-panel--clock.is-zoomed .chart-title {
-    display: block;
-}
-
-
-/* nice layout for clock + risk banner in zoom card */
-.chart-content--clock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
 
 /* Panel 6 – speed-limit sign */
 .panel-6 .chart-panel--speed {
