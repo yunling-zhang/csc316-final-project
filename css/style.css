@@ -51,43 +51,101 @@ h1 {
    Controls (speed-limit vis)
    =========================== */
 #car-speed-limit-crashes-vis-nathan-controls {
-    margin-top: 32px;
-    margin-bottom: 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     font-size: 16px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
 }
 
 #car-speed-limit-crashes-vis-nathan-controls label {
-    font-weight: 600;
-    color: #333;
+    font-weight: 700;
+    color: #1e293b;
 }
 
 #car-speed-limit-crashes-vis-nathan-year-select {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid #aaa;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid #3b82f6;
     background: #fff;
     font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#car-speed-limit-crashes-vis-nathan-year-select:hover {
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+#car-speed-limit-crashes-vis-nathan-year-select:focus {
+    outline: none;
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
 /* ===========================
    Visualization Container (default card)
    =========================== */
 #car-speed-limit-crashes-vis-nathan {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    padding: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 24px;
     margin-bottom: 50px;
-    width: 90%;
+    width: 100%;
     max-width: 1280px;
+    border: 1px solid #e2e8f0;
 }
 
 #car-speed-limit-crashes-vis-nathan svg {
     display: block;
     margin: 0 auto;
+    border-radius: 12px;
+}
+
+/* Speed control slider styling */
+#speed-control-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+#speed-control-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+#speed-control-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+#speed-control-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* ===========================
@@ -95,7 +153,6 @@ h1 {
    =========================== */
 .road {
     fill: #444;
-    opacity: 0.25;
 }
 
 .sign-circle {
@@ -105,8 +162,9 @@ h1 {
 }
 
 .sign-text {
-    font-weight: 600;
+    font-weight: 900;
     fill: #111;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 .x-label {
@@ -115,7 +173,27 @@ h1 {
 }
 
 .car {
-    fill: #e63946;
+    fill: #dc2626;
+}
+
+/* Y-axis styling */
+.y-axis .tick line {
+    stroke: #e5e7eb;
+    stroke-dasharray: 4 4;
+}
+
+.y-axis .domain {
+    stroke: #9ca3af;
+}
+
+.y-axis text {
+    font-size: 12px;
+    fill: #4b5563;
+    font-weight: 500;
+}
+
+.y-axis-label {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* ===========================
@@ -620,8 +698,8 @@ body.no-scroll {
 
 /* Panel 6 – speed-limit sign */
 .panel-6 .chart-panel--speed {
-    left: 47%;        /* center of the roadside board */
-    top: 42%;         /* vertical center of the board */
+    left: 47%;
+    top: 42%;
     width: 50%;
     transform: translate(-50%, -50%);
 }
@@ -631,6 +709,7 @@ body.no-scroll {
     background: transparent;
     box-shadow: none;
     border-radius: 0;
+    border: none;
     padding: 0;
     margin: 0;
     width: 100%;
@@ -638,13 +717,22 @@ body.no-scroll {
 
 /* shrink whole SVG into the board */
 .panel-6 .chart-panel--speed svg {
-    transform:translate(-23%, 10%)  scale(0.20);
+    transform: translate(-23%, 10%) scale(0.20);
     transform-origin: center;
 }
 
 /* zoomed: SVG full size */
 .panel-6 .chart-panel--speed.is-zoomed svg {
     transform: scale(1);
+}
+
+/* zoomed: restore card styling */
+.panel-6 .chart-panel--speed.is-zoomed #car-speed-limit-crashes-vis-nathan {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    padding: 24px;
+    border: 1px solid #e2e8f0;
 }
 
 /* compact controls on the sign */
@@ -662,9 +750,11 @@ body.no-scroll {
 .panel-6 .chart-panel--speed #car-speed-limit-crashes-vis-nathan-controls {
     display: none !important;
 }
+
 .panel-6 .chart-panel--speed.is-zoomed #car-speed-limit-crashes-vis-nathan-controls {
-    display: flex !important;    /* matches your original controls layout */
+    display: flex !important;
 }
+
 /* Panel 6 – hide title on roadside sign, show only on zoom */
 .panel-6 .chart-panel--speed .chart-title {
     display: none;
@@ -672,10 +762,14 @@ body.no-scroll {
 
 .panel-6 .chart-panel--speed.is-zoomed .chart-title {
     display: block;
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 16px;
 }
 
 /* Panel 6 – hide speed display and slider when inside the roadside sign */
-.panel-6 .chart-panel--speed #speed-display-group {
+.panel-6 .chart-panel--speed #speed-display-group,
+.panel-6 .chart-panel--speed #crash-display-group {
     visibility: hidden !important;
 }
 
@@ -683,7 +777,8 @@ body.no-scroll {
     display: none !important;
 }
 
-.panel-6 .chart-panel--speed.is-zoomed #speed-display-group {
+.panel-6 .chart-panel--speed.is-zoomed #speed-display-group,
+.panel-6 .chart-panel--speed.is-zoomed #crash-display-group {
     visibility: visible !important;
 }
 
