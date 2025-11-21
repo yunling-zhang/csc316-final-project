@@ -1,0 +1,304 @@
+/* css/comic.css
+   Horizontal comic-strip driven by vertical scroll (no GSAP)
+   - white grid background
+   - panels laid out in one horizontal row
+   - vertical scroll drives horizontal movement via JS
+*/
+
+/* Comic fonts */
+@font-face {
+    font-family: "Bangers";
+    src: url("../fonts/Bangers-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "ShadowsIntoLight";
+    src: url("../fonts/ShadowsIntoLight-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  /* Base page */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+  
+  /* Hide vertical scrollbar but keep scrolling */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  html {
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  body.comic-body {
+    background-color: #ffffff;
+    color: #111827;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+    /* light doodle/grid background */
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -20px 0, 0 -20px;
+  
+    overflow-x: hidden;
+  }
+  
+  /* HEADER / HERO */
+  .comic-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
+    text-align: center;
+    background: transparent;
+  }
+  
+  .comic-hero-inner {
+    max-width: 900px;
+  }
+  
+  .comic-hero-title {
+    margin: 0 0 1rem;
+    font-family: "Bangers", system-ui;
+    font-size: clamp(2.2rem, 4vw, 3.1rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  
+  .comic-hero-subtitle {
+    margin: 0 0 1.5rem;
+    font-size: clamp(1rem, 1.1vw + 0.8rem, 1.2rem);
+    line-height: 1.6;
+  }
+  
+  .comic-hero-hint {
+    margin: 0;
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+  
+  /* MAIN COMIC VIEWPORT (pinned horizontally) */
+  .comic-main {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Horizontal track of panels */
+  .comic-track {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* gap controlled via CSS: slightly larger than panel width */
+    column-gap: 70vw;
+    will-change: transform;
+  }
+  
+  /* Comic panels (aligned horizontally) */
+  .comic-panel {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(60vw, 780px);
+    max-height: 80vh;
+  
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    border: 3px solid #000000;
+    box-sizing: border-box;
+  
+    /* lane offset set by JS (small vertical variation) */
+    transform: translateY(var(--lane-offset, 0px));
+  
+    /* helper (if needed later) */
+    scroll-snap-align: center;
+  }
+  
+  /* Extra doodle outline */
+  .comic-panel::before {
+    content: "";
+    position: absolute;
+    inset: 6px -6px -6px 6px;
+    border-radius: 18px;
+    border: 3px solid #000000;
+    opacity: 0.4;
+    transform: rotate(-1.5deg);
+    pointer-events: none;
+  }
+  
+  /* Inside panel */
+  .comic-panel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .panel-image,
+  .comic-panel-inner > img {
+    max-width: 100%;
+    max-height: 60vh;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+  
+  /* Caption — NO BOX, large black text */
+  .panel-caption,
+  .panel .panel-caption {
+    margin-top: 0.5rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-family: "Bangers", system-ui;
+    font-size: clamp(1.05rem, 1.1vw + 0.8rem, 1.35rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.5;
+    color: #000000;
+  }
+  
+  /* Speech style text */
+  .panel-caption .speech-text {
+    font-family: "ShadowsIntoLight", system-ui;
+    text-transform: none;
+    font-size: 1.15rem;
+  }
+  
+  /* Chart holders */
+  .comic-panel-inner .chart-panel {
+    margin-top: 0.75rem;
+  }
+  
+  /* FIXED NAV ARROWS */
+  .comic-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    background: #facc15;
+    color: #000000;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  
+  .comic-arrow-left {
+    left: clamp(10px, 3vw, 32px);
+  }
+  
+  .comic-arrow-right {
+    right: clamp(10px, 3vw, 32px);
+  }
+  
+  .comic-arrow:hover {
+    transform: translateY(-50%) scale(1.05);
+    background: #fde047;
+  }
+  
+  .comic-arrow:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+  
+  /* SCROLL LENGTH (JS dynamically sets height) */
+  .comic-scroll-length {
+    height: 0;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .comic-panel {
+      width: min(70vw, 720px);
+      padding: 1.2rem 1.4rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .comic-panel {
+      width: 88vw;
+      padding: 1rem 1.1rem;
+      border-width: 2px;
+    }
+  
+    .comic-panel::before {
+      border-width: 2px;
+    }
+  
+    .panel-caption {
+      font-size: clamp(0.95rem, 0.9vw + 0.7rem, 1.2rem);
+    }
+  
+    .comic-arrow {
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (min-width: 1440px) {
+    .comic-panel {
+      width: 55vw;
+    }
+  }
+  
+  /* Popup overlay */
+.viz-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Window */
+.viz-popup-content {
+  background: #fff;
+  width: 90vw;
+  height: 90vh;
+  border-radius: 20px;
+  border: 4px solid #000;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: auto;
+  padding: 20px;
+}
+
+/* X button */
+.viz-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 2rem;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speed Limit Crashes – Comic Story</title>
+
+  <!-- Optional: keep D3 available if you want to embed viz later -->
+  <!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
+
+  <link rel="stylesheet" href="css/comic_v2.css" />
+</head>
+
+<body class="comic-v2-body">
+  <!-- === HERO / TITLE SECTION === -->
+  <header class="comic-hero">
+    <div class="comic-hero-inner">
+      <h1 class="comic-hero-title">
+        Speed Limits & Crashes:
+        <span class="comic-hero-highlight">A Comic Data Story</span>
+      </h1>
+      <p class="comic-hero-subtitle">
+        Follow Nathan’s morning as he learns how speed limits, road types,
+        and time of day shape collision risk in his city.
+      </p>
+      <p class="comic-hero-hint">
+        Scroll to start the story
+        <span class="comic-hero-arrow">↓</span>
+      </p>
+    </div>
+  </header>
+
+  <!-- === MAIN COMIC AREA === -->
+  <main class="comic-main">
+    <!-- Fixed arrows (hidden until we pass the hero) -->
+    <button class="comic-arrow comic-arrow--left" aria-label="Previous panel">
+      &lt;
+    </button>
+    <button class="comic-arrow comic-arrow--right" aria-label="Next panel">
+      &gt;
+    </button>
+
+    <!-- Track that holds all panels -->
+    <section class="comic-track" aria-label="Comic panels">
+      <!-- Panel 1 (example content – you’ll swap in real art) -->
+      <article class="comic-panel from-bottom-right is-active"
+               data-panel-index="0">
+        <div class="comic-panel-inner">
+          <div class="comic-panel-art">
+            <!-- Replace with your panel image -->
+            <img src="img/panel1.png"
+                 alt="Nathan driving past a speed limit sign"
+                 class="comic-panel-image" />
+          </div>
+
+          <div class="comic-panel-caption caption-box">
+            <p class="caption-text">
+              “Nathan thinks: <span class="speech-text">How bad can speeding really be?</span> 
+              It’s just five minutes off my commute…”
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 2: leave space for mini data viz / phone later -->
+      <article class="comic-panel from-left"
+               data-panel-index="1">
+        <div class="comic-panel-inner">
+          <div class="comic-panel-art">
+            <!-- placeholder image for now -->
+            <img src="img/panel2.png"
+                 alt="Nathan checking his phone with a small chart"
+                 class="comic-panel-image" />
+            <!-- Placeholder zone where a mini viz / phone screen will go -->
+            <div class="panel-viz-slot">
+              <!-- later: iframe or inline SVG goes here -->
+              <div class="panel-viz-placeholder">
+                Data viz goes here
+              </div>
+            </div>
+          </div>
+
+          <div class="comic-panel-caption caption-box">
+            <p class="caption-text">
+              On his phone, Nathan opens a crash map.
+              <span class="speech-text">
+                “Wait, there are this many collisions just on my route?”
+              </span>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 3 -->
+      <article class="comic-panel from-top-right"
+               data-panel-index="2">
+        <div class="comic-panel-inner">
+          <div class="comic-panel-art">
+            <img src="img/panel3.png"
+                 alt="Nathan brushing teeth and looking at a clock"
+                 class="comic-panel-image" />
+          </div>
+
+          <div class="comic-panel-caption caption-box">
+            <p class="caption-text">
+              Brushing his teeth, he wonders which time of day is safest.
+              <span class="speech-text">“Is the morning rush actually less risky?”</span>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Add more panels as needed; just keep incrementing data-panel-index -->
+    </section>
+  </main>
+
+  <script src="js/comic_v2.js"></script>
+</body>
+</html>

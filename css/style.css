@@ -1187,3 +1187,61 @@ body.no-scroll {
         font-size: 10px;
     }
 }
+
+/* ============================================
+   COMIC PAGE OVERRIDES FOR CHART MODALS
+   ============================================ */
+
+/* On the comic page, keep embedded chart blocks in normal flow
+   so they don't overlap captions/images (fixes panel 3 overlap). */
+   body.comic-body .chart-panel {
+    position: static;
+    margin-top: 0.75rem;
+  }
+  
+  /* Zoomed state is already a full-screen flex container.
+     Here we just tweak the inner card to be ~90% viewport and comic-y. */
+  body.comic-body .chart-panel.is-zoomed {
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Comic-style modal card: 90% of viewport, outlined like a panel */
+  body.comic-body .chart-panel.is-zoomed .chart-content {
+    position: relative;
+    width: 90vw;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+  
+    background: #ffffff;
+    border-radius: 18px;
+    border: 3px solid #000000;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    padding: 18px 20px;
+  }
+  
+  /* Slight doodle-outline echo, like the comic panels */
+  body.comic-body .chart-panel.is-zoomed .chart-content::before {
+    content: "";
+    position: absolute;
+    inset: 8px -8px -8px 8px;
+    border-radius: 18px;
+    border: 3px solid #000000;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  
+  /* Make headings inside the modal feel more comic-ish,
+     but don't touch body text to keep charts readable. */
+  body.comic-body .chart-panel.is-zoomed .chart-title,
+  body.comic-body .chart-panel.is-zoomed h2 {
+    font-family: "Bangers", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .chart-panel {
+    display: none;        /* NEVER show inside comic */
+}
