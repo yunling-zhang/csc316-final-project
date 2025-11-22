@@ -19,7 +19,7 @@ function getSeasonForMonth(month) {
 function parseMonthlyCSVText(csvText) {
     const lines = csvText.trim().split('\n');
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'];
+        'July', 'August', 'September', 'October', 'November', 'December'];
 
     if (lines.length < 4) {
         console.error('Not enough lines in CSV');
@@ -122,14 +122,14 @@ function parseMonthlyCSVText(csvText) {
 function parseMonthlyData(rawData) {
     const monthlyData = [];
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'];
+        'July', 'August', 'September', 'October', 'November', 'December'];
 
     const dataRows = rawData.slice(3).filter(row => {
         return row[''] === '' &&
-               row['Month'] &&
-               months.includes(row['Month']) &&
-               row['Collision Sev'] === 'Total' &&
-               row['Injury Severity'] === 'Total';
+            row['Month'] &&
+            months.includes(row['Month']) &&
+            row['Collision Sev'] === 'Total' &&
+            row['Injury Severity'] === 'Total';
     });
 
     months.forEach((month, index) => {
@@ -171,7 +171,7 @@ function parseMonthlyData(rawData) {
 function parseMonthlyDataFromRaw(rawData) {
     const monthlyData = [];
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'];
+        'July', 'August', 'September', 'October', 'November', 'December'];
 
     if (rawData.length < 3) {
         console.error('Not enough rows in data');
@@ -400,7 +400,11 @@ function initializeCircularChart(data) {
 
     const tooltip = createTooltip();
     addHoverEffects(svg, tooltip, currentYear);
+
+    // After initial circular chart is drawn:
+    updateMonthMiniPreview();
 }
+
 
 function drawBackgroundElements(svg, innerRadius, outerRadius) {
     svg.selectAll('.bg-element').remove();
@@ -448,7 +452,7 @@ function drawSeasonRing(svg, data, outerRadius) {
         const startMonth = config.months[0];
         const endMonth = config.months[2];
         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                           'July', 'August', 'September', 'October', 'November', 'December'];
+            'July', 'August', 'September', 'October', 'November', 'December'];
         const startIndex = monthNames.indexOf(startMonth);
         const endIndex = monthNames.indexOf(endMonth);
 
@@ -601,7 +605,7 @@ function createEnhancedYearSelector(years, initialYear, data, svg, innerRadius, 
 
     circularChartState.currentYearIndex = years.indexOf(initialYear);
 
-    playBtn.on('click', function() {
+    playBtn.on('click', function () {
         if (circularChartState.isPlaying) {
             clearInterval(circularChartState.playInterval);
             circularChartState.isPlaying = false;
@@ -623,7 +627,7 @@ function createEnhancedYearSelector(years, initialYear, data, svg, innerRadius, 
         }
     });
 
-    toggleBtn.on('click', function() {
+    toggleBtn.on('click', function () {
         if (circularChartState.isPlaying) {
             clearInterval(circularChartState.playInterval);
             circularChartState.isPlaying = false;
@@ -653,7 +657,7 @@ function createEnhancedYearSelector(years, initialYear, data, svg, innerRadius, 
         }
     });
 
-    selector.on('change', function() {
+    selector.on('change', function () {
         if (circularChartState.isPlaying) {
             clearInterval(circularChartState.playInterval);
             circularChartState.isPlaying = false;
@@ -717,9 +721,9 @@ function drawEnhancedCircularBars(svg, data, year, scales, innerRadius, outerRad
     bars.transition()
         .duration(800)
         .delay((d, i) => i * 60)
-        .attrTween('d', function(d) {
+        .attrTween('d', function (d) {
             const i = d3.interpolate(0, d.value);
-            return function(t) {
+            return function (t) {
                 const tempD = { ...d, value: i(t) };
                 return arc(tempD);
             };
@@ -848,6 +852,9 @@ function updateChartEnhanced(data, year, svg, innerRadius, outerRadius, original
         .attr('data-fatalities', d => d.fatalities);
 
     createEnhancedLegend(scales.color, outerRadius, data, year);
+
+    // Keep mini in sync whenever the year/view changes:
+    updateMonthMiniPreview();
 }
 
 function createEnhancedLegend(colorScale, outerRadius, data, year) {
@@ -954,7 +961,7 @@ function createTooltip() {
 
 function addHoverEffects(svg, tooltip, currentYear) {
     svg.selectAll('.month-bar')
-        .on('mouseenter', function(event) {
+        .on('mouseenter', function (event) {
             const month = this.getAttribute('data-month');
 
             d3.select(this)
@@ -965,7 +972,7 @@ function addHoverEffects(svg, tooltip, currentYear) {
 
             if (!circularChartState.selectedMonth) {
                 svg.selectAll('.month-bar')
-                    .filter(function() { return this.getAttribute('data-month') !== month; })
+                    .filter(function () { return this.getAttribute('data-month') !== month; })
                     .classed('dimmed', true);
             }
 
@@ -979,7 +986,7 @@ function addHoverEffects(svg, tooltip, currentYear) {
             const fatalityPct = value > 0 ? ((fatalities / value) * 100).toFixed(2) : 0;
 
             const allValues = [];
-            svg.selectAll('.month-bar').each(function() {
+            svg.selectAll('.month-bar').each(function () {
                 allValues.push({ month: this.getAttribute('data-month'), value: +this.getAttribute('data-value') });
             });
             allValues.sort((a, b) => b.value - a.value);
@@ -1012,14 +1019,14 @@ function addHoverEffects(svg, tooltip, currentYear) {
                     Click to select/compare
                 </div>
             `)
-            .style('opacity', 1);
+                .style('opacity', 1);
         })
-        .on('mousemove', function(event) {
+        .on('mousemove', function (event) {
             tooltip
                 .style('left', Math.min(event.clientX + 15, window.innerWidth - 300) + 'px')
                 .style('top', Math.min(event.clientY - 10, window.innerHeight - 200) + 'px');
         })
-        .on('mouseleave', function() {
+        .on('mouseleave', function () {
             const month = this.getAttribute('data-month');
 
             if (circularChartState.selectedMonth !== month) {
@@ -1036,7 +1043,7 @@ function addHoverEffects(svg, tooltip, currentYear) {
 
             tooltip.style('opacity', 0);
         })
-        .on('click', function(event) {
+        .on('click', function (event) {
             event.stopPropagation();
             const month = this.getAttribute('data-month');
 
@@ -1049,15 +1056,15 @@ function addHoverEffects(svg, tooltip, currentYear) {
             } else {
                 circularChartState.selectedMonth = month;
                 svg.selectAll('.month-bar')
-                    .classed('selected', function() { return this.getAttribute('data-month') === month; })
-                    .classed('dimmed', function() { return this.getAttribute('data-month') !== month; });
+                    .classed('selected', function () { return this.getAttribute('data-month') === month; })
+                    .classed('dimmed', function () { return this.getAttribute('data-month') !== month; });
 
                 showMonthComparison(month, svg);
             }
         });
 
     // Click anywhere else to deselect
-    d3.select('#circular-bar-chart').on('click', function(event) {
+    d3.select('#circular-bar-chart').on('click', function (event) {
         if (event.target.tagName === 'svg' || event.target.classList.contains('circular-chart-svg')) {
             circularChartState.selectedMonth = null;
             svg.selectAll('.month-bar')
@@ -1146,3 +1153,20 @@ function hideMonthComparison() {
 }
 
 window.hideMonthComparison = hideMonthComparison;
+
+function updateMonthMiniPreview() {
+    const mini = document.querySelector('.month-screen');
+    if (!mini) return;
+
+    const src = document.querySelector('#circular-bar-chart svg');
+    if (!src) return;
+
+    const clone = src.cloneNode(true);
+    mini.innerHTML = '';
+    clone.removeAttribute('width');
+    clone.removeAttribute('height');
+    mini.appendChild(clone);
+}
+
+// On modal close
+document.addEventListener('month-update-mini', updateMonthMiniPreview);

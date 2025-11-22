@@ -465,13 +465,17 @@ function initializeVisualization(rawData) {
 
     speedControlSlider = slider.node();
 
-    slider.on("input", function() {
+    slider.on("input", function () {
         currentSpeed = +this.value;
         updateSpeedDisplay(currentSpeed);
     });
 
     currentYear = defaultYear;
     updateVisualization(defaultYear);
+
+    // After the initial signs and dashboard are drawn:
+    updateSpeedMiniPreview();
+
 
     yearSel.on("change", function () {
         currentYear = +this.value;
@@ -481,8 +485,8 @@ function initializeVisualization(rawData) {
 
 function updateSpeedDisplay(speed) {
     const zone = speed <= 50 ? speedZoneColors.low :
-                 speed <= 80 ? speedZoneColors.medium :
-                 speedZoneColors.high;
+        speed <= 80 ? speedZoneColors.medium :
+            speedZoneColors.high;
 
     // Update speedometer
     d3.select("#speed-value")
@@ -523,10 +527,10 @@ function updateSpeedDisplay(speed) {
 // Returns the speed limit that the current speed falls within
 function getSpeedLimitForSpeed(speed, speedLimits) {
     if (speed === 0) return null;
-    
+
     // Sort speed limits in ascending order
     const sorted = [...speedLimits].sort((a, b) => parseInt(a.speed, 10) - parseInt(b.speed, 10));
-    
+
     // Find the speed limit that matches or is closest below the current speed
     for (let i = sorted.length - 1; i >= 0; i--) {
         const limit = parseInt(sorted[i].speed, 10);
@@ -534,7 +538,7 @@ function getSpeedLimitForSpeed(speed, speedLimits) {
             return sorted[i];
         }
     }
-    
+
     // If speed is below all limits, return the lowest one
     return sorted[0];
 }
@@ -542,7 +546,7 @@ function getSpeedLimitForSpeed(speed, speedLimits) {
 // update visualization for a given year
 function updateVisualization(year) {
     if (!year) return;
-    
+
     const svg = d3.select("#car-speed-limit-crashes-vis-nathan svg g");
     const data = cachedByYear[year];
     if (!data || data.length === 0) return;
@@ -777,3 +781,19 @@ function spawnSign(svg, speedLimitData, startX) {
     });
 }
 
+function updateSpeedMiniPreview() {
+    const mini = document.querySelector('.speed-screen');
+    if (!mini) return;
+
+    const src = document.querySelector('#car-speed-limit-crashes-vis-nathan svg');
+    if (!src) return;
+
+    const clone = src.cloneNode(true);
+    mini.innerHTML = '';
+    clone.removeAttribute('width');
+    clone.removeAttribute('height');
+    mini.appendChild(clone);
+}
+
+// On modal close
+document.addEventListener('speed-update-mini', updateSpeedMiniPreview);

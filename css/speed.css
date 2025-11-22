@@ -1,0 +1,106 @@
+/* Scoped speed-limit styles for Panel 6 modal (#speed-modal) */
+
+#speed-modal .chart-content--speed {
+  padding: 8px 0 0 0;
+}
+
+/* Year selector label */
+#speed-modal #car-speed-limit-crashes-vis-nathan-controls label {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Year dropdown */
+#speed-modal #car-speed-limit-crashes-vis-nathan-year-select {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid #3b82f6;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#speed-modal #car-speed-limit-crashes-vis-nathan-year-select:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+#speed-modal #car-speed-limit-crashes-vis-nathan-year-select:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Visualization card */
+#speed-modal #car-speed-limit-crashes-vis-nathan {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  width: 100%;
+  max-width: 1280px;
+  border: 1px solid #e2e8f0;
+}
+
+#speed-modal #car-speed-limit-crashes-vis-nathan svg {
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+
+/* Speed "slider road" if used */
+#speed-modal #speed-control-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  border-radius: 5px;
+  outline: none;
+}
+
+#speed-modal #speed-control-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+#speed-modal #speed-control-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+#speed-modal #speed-control-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* SVG elements from speedLimitVisSigns.js */
+#speed-modal .road {
+  fill: #444;
+}
+
+#speed-modal .sign-circle {
+  stroke: #d62828;
+  stroke-width: 3px;
+  fill: #fff;
+}
+
+#speed-modal .sign-text {
+  font-weight: 900;
+  fill: #111;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}

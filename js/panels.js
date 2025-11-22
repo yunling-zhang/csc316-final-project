@@ -77,9 +77,21 @@
         if (!modal) return;
         modal.classList.remove('open');
 
-        // If this is the heatmap modal, refresh the mini phone preview in Panel 2
+        // Refresh minis when modals close
         if (modal.id === 'heatmap-modal') {
             document.dispatchEvent(new Event('heatmap-update-mini'));
+        }
+        if (modal.id === 'clock-modal') {
+            document.dispatchEvent(new Event('clock-update-mini'));
+        }
+        if (modal.id === 'speed-modal') {
+            document.dispatchEvent(new Event('speed-update-mini'));
+        }
+        if (modal.id === 'roadtype-modal') {
+            document.dispatchEvent(new Event('roadtype-update-mini'));
+        }
+        if (modal.id === 'month-modal') {
+            document.dispatchEvent(new Event('month-update-mini'));
         }
     }
 

@@ -3,7 +3,7 @@ body.comic-reader-body {
     margin: 0;
     padding: 0;
     background: #000;
-    color: #fff;
+    /* color: #fff; */
     height: 100vh;
     width: 100vw;
     overflow: hidden;
@@ -86,7 +86,6 @@ body.comic-reader-body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* overflow: hidden; */
 }
 
 /* Comic images scale to fit page */
@@ -177,7 +176,7 @@ body.comic-reader-body {
     color: #ffd8aa;
 }
 
-/* Chart modal (used by heatmap and future charts) */
+/* Chart modal shell (all visualizations) */
 .chart-modal {
     position: fixed;
     inset: 0;
@@ -185,6 +184,7 @@ body.comic-reader-body {
     align-items: center;
     justify-content: center;
     z-index: 1200;
+    overflow: hidden; /* background stays fixed */
 }
 
 .chart-modal.open {
@@ -210,16 +210,34 @@ body.comic-reader-body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* overflow: hidden; */
+
+    /* Allow scrolling inside the zoomed view */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Iframe that hosts heatmap.html */
-.chart-iframe {
+/* Modal title / subtitle shared across vis */
+.modal-title-box {
     width: 100%;
-    height: 70vh;
-    border: none;
-    border-radius: 12px;
-    background: #111;
+    padding: 16px 0 8px;
+    text-align: center;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+}
+
+.modal-subtitle {
+    margin: 6px 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+    /* color: #333; */
+    text-align: center;
 }
 
 /* Thumbnail on comic page */
@@ -241,6 +259,217 @@ body.comic-reader-body {
 .chart-thumb-img:hover {
     transform: scale(1.03);
     box-shadow: 0 0 34px rgba(0, 0, 0, 0.95);
+}
+
+/* ================================
+   Panel 2 – phone with mini heatmap
+   ================================ */
+.panel-phone-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-phone-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Phone screen area – tweak to match drawing */
+.phone-screen {
+    position: absolute;
+    top: 59%;
+    left: 32%;
+    width: 17%;
+    height: 15%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+    background: #fff;
+    cursor: pointer;
+}
+
+/* The SVG clone will be placed inside here */
+.phone-heatmap-mini svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ================================
+   Panel 3 – clock mini patch
+   ================================ */
+.panel-clock-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-clock-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* ================================
+   Panel 6 – speed-limit sign patch
+   ================================ */
+.panel-speed-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-speed-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Approximate area of the sign/dashboard – tweak */
+.speed-screen {
+    position: absolute;
+    top: 35%;
+    left: 78%;
+    width: 20%;
+    height: 28%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+/* ================================
+   Panel 7 – navigation display patch
+   ================================ */
+.panel-roadtype-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-roadtype-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Approximate nav / GPS screen area – tweak */
+.roadtype-screen {
+    position: absolute;
+    top: 47%;
+    left: 62%;
+    width: 26%;
+    height: 28%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+/* ================================
+   Panel 10 – calendar patch
+   ================================ */
+.panel-month-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-month-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Approximate calendar area – tweak */
+.month-screen {
+    position: absolute;
+    top: 42%;
+    left: 45%;
+    width: 32%;
+    height: 32%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+/* Mini SVGs inside patches and phone */
+.clock-screen svg,
+.speed-screen svg,
+.roadtype-screen svg,
+.month-screen svg,
+.phone-heatmap-mini svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Panel 2 mini preview (car + floating heatmap card) */
+#heatmap-mini {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#heatmap-mini .mini-car-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+}
+
+#heatmap-mini .heatmap-mini-overlay {
+    position: absolute;
+    z-index: 2;
+
+    /* approximate car-window placement — tweak if needed */
+    top: 49%;
+    left: 56%;
+    width: 65%;
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 8px;
+    padding: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#heatmap-mini .heatmap-mini-overlay svg {
+    width: 100%;
+    height: auto;
+}
+
+.clock-screen {
+    position: absolute;
+    top: 31%;  /* up/down */
+    left: 78.5%; /* left/right */
+    width: 100%;
+    height: 18%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
 }
 
 /* Responsive tweaks */
@@ -275,297 +504,4 @@ body.comic-reader-body {
         width: 96%;
         padding: 16px;
     }
-}
-
-/* Panel 2 specific: phone with mini visualization preview */
-.panel-phone-wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.panel-phone-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-/* Approximate phone screen area – tweak percentages to align with your artwork */
-.phone-screen {
-    position: absolute;
-    top: 62%;
-    left: 50%;
-    width: 32%;
-    height: 24%;
-    transform: translate(-50%, -50%);
-    border: none;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-}
-
-.phone-screen-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
-}
-
-
-/* Panel 2 specific: phone with mini visualization preview */
-.panel-phone-wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.panel-phone-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-/* Approximate phone screen area – tweak these to line up with your drawing */
-.phone-screen {
-    position: absolute;
-    top: 60%;
-    /* move up/down */
-    left: 32%;
-    /* move left/right */
-    width: 17%;
-    /* phone screen width */
-    height: 15%;
-    /* phone screen height */
-    transform: translate(-50%, -50%);
-    border: none;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-}
-
-.phone-screen-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
-}
-
-/* Panel 2: phone with mini interactive heatmap */
-.panel-phone-wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.panel-phone-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-/* Phone screen area: adjust percentages to line up with the art */
-.phone-screen {
-    position: absolute;
-    top: 60%;
-    /* move up/down */
-    left: 32%;
-    /* move left/right */
-    width: 17%;
-    /* phone screen width */
-    height: 15%;
-    /* phone screen height */
-    transform: translate(-50%, -50%);
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
-    background: #111;
-}
-
-.phone-screen-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* Panel 2: phone with mini heatmap preview */
-.panel-phone-wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.panel-phone-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-/* Phone screen area – tweak to match your drawing */
-.phone-screen {
-    position: absolute;
-    top: 59%;
-    /* move up/down */
-    left: 32%;
-    /* move left/right */
-    width: 17%;
-    /* phone screen width */
-    height: 15%;
-    /* phone screen height */
-    transform: translate(-50%, -50%);
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
-    background: #fff;
-    cursor: pointer;
-}
-
-/* The SVG clone will be placed inside here */
-.phone-heatmap-mini svg {
-    width: 100%;
-    height: 100%;
-}
-
-.modal-title-box {
-    width: 100%;
-    padding: 16px 0 8px;
-    text-align: center;
-    /* center everything */
-}
-
-.modal-title {
-    margin: 0;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #000;
-    /* pure black */
-    text-align: center;
-    /* redundant but safe */
-}
-
-.modal-subtitle {
-    margin: 6px 0 0;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #333;
-    /* dark gray */
-    text-align: center;
-    /* centered */
-}
-
-.chart-modal-content {
-    position: relative;
-    max-width: 1050px;
-    width: 96%;
-    max-height: 95vh;
-    /* give it a bit more vertical room */
-    background: #ffffff;
-    /* white card */
-    border-radius: 18px;
-    padding: 16px 24px 16px;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
-    color: #111;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    overflow-y: auto;
-    /* allow vertical scroll if still needed */
-    overflow-x: hidden;
-}
-
-/* Slightly tighter spacing in the heatmap card when inside the modal */
-.heatmap-card {
-    padding-bottom: 12px;
-}
-
-.heatmap-legend {
-    margin-bottom: 0;
-}
-
-.chart-modal-content {
-    position: relative;
-    max-width: 1100px;
-    width: 100vw;
-    /* can use most of the screen width */
-    max-height: 100vh;
-    /* not larger than viewport */
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 16px 24px 24px;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
-    color: #111;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    overflow: visible;
-    /* important: let scaled content overflow inside */
-}
-
-.chart-modal {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1200;
-    overflow: hidden;
-    /* no scroll on background */
-}
-
-.heatmap-card {
-    transform-origin: top center;
-    /* scaling will happen from the top center */
-}
-
-/* iframe inside phone preview */
-.phone-screen-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* iframe inside zoomed modal */
-.chart-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 18px;
-}
-
-/* When heatmap.html is opened with ?mode=mini */
-body.mini-mode .modal-title-box,
-body.mini-mode .heatmap-year-range,
-body.mini-mode .heatmap-legend {
-    display: none;
-}
-
-body.mini-mode .heatmap-card {
-    padding: 4px 4px 6px;
-}
-
-/* Mini preview image inside the phone */
-.phone-heatmap-mini .mini-car-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* fills the phone screen */
-    border-radius: 6px;
-    display: block;
 }

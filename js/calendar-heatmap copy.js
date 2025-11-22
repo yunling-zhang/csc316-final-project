@@ -149,22 +149,21 @@
 
   // ---------- Mini preview (phone) ----------
   function updateMiniPreview() {
-    const container = document.getElementById("heatmap-mini");
-    if (!container) return;
+    // Find the mini container inside the phone (comic_template.html)
+    const miniContainer = document.getElementById("heatmap-mini");
+    if (!miniContainer) return;              // safely do nothing on pages without the phone
 
-    const overlay = container.querySelector(".heatmap-mini-overlay");
-    if (!overlay) return;
-
+    // Clone the main heatmap SVG
     const svgNode = svg.node();
     if (!svgNode) return;
 
-    const clone = svgNode.cloneNode(true);
-    clone.removeAttribute("width");
-    clone.removeAttribute("height");
+    const clone = svgNode.cloneNode(true);   // deep clone, keeps viewBox so it scales nicely
 
-    overlay.innerHTML = "";
-    overlay.appendChild(clone);
+    // Optional: remove any existing content
+    miniContainer.innerHTML = "";
+    miniContainer.appendChild(clone);
   }
+
 
   // ---------- Update function ----------
   function updateYears(yearSubset, animate = true) {

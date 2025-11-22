@@ -29,7 +29,7 @@
   left: 57%;
   transform: translate(-50%, -50%);
   padding: 24px;
-  background: rgba(255, 240, 222, 0.94);
+  /* background: rgba(255, 240, 222, 0.94); */
   border-radius: 12px;
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
   width: min(80vw, 600px);
@@ -43,7 +43,7 @@
 #heatmap-modal .controls-section {
   margin-top: 8px;
   padding: 16px 20px 18px 20px;
-  background: rgba(255, 227, 204, 0.92);
+  /* background: rgba(255, 227, 204, 0.92); */
   border-radius: 12px;
 }
 
