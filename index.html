@@ -19,287 +19,313 @@
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="#">Bullet Points Webtoon</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">Bullet Points Webtoon</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#visualizations">Story</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Webtoon + visualizations -->
-<main id="visualizations" class="webtoon">
-
-    <!-- Panel 1 – wakes up -->
-    <section class="panel panel-1">
-        <p class="panel-caption">"A brand-new day begins as our driver slowly wakes up."</p>
-        <img src="img/panel1.png" alt="Driver wakes up" class="panel-image">
-    </section>
-
-    <!-- Panel 2 – checks phone (weekday heatmap) -->
-    <section class="panel panel-2">
-        <p class="panel-caption">"He checks his phone to see which days are safest to travel.” Click the phone!</p>
-        <img src="img/panel2.png" alt="Driver checks phone" class="panel-image">
-
-        <!-- phone screen chart -->
-        <div class="chart-panel chart-panel--heatmap" data-zoomable>
-            <button class="chart-close" type="button">&times;</button>
-
-            <!-- content wrapper so zoom can style it as a card -->
-            <section class="chart-content chart-content--heatmap heatmap-section">
-                <header class="heatmap-header text-center">
-                    <h2>Which day of week has highest collision rate?</h2>
-                    <p>
-                        Calendar-style heatmap of collisions by weekday (columns) and year (rows).
-                        Slide the year range to explore trends over time.
-                    </p>
-                </header>
-
-                <div class="chart-card heatmap-card">
-                    <div id="heatmap" class="chart heatmap-chart"></div>
-                    <div id="year-range" class="year-range heatmap-year-range"></div>
-                    <div id="legend" class="legend heatmap-legend"></div>
-                    <p class="heatmap-source text-center">
-                        Source: <code>data/collisions_by_weekday_cleaned.csv</code>.
-                    </p>
-                </div>
-            </section>
-        </div>
-    </section>
-
-    <!-- Panel 3 – brushing teeth, wall clock (time-of-day radial chart) -->
-    <section class="panel panel-3">
-        <p class="panel-caption">“While brushing his teeth, he wonders which time of day is safest.” Click the clock!.</p>
-        <img src="img/panel3.png" alt="Driver brushes teeth and looks at clock" class="panel-image">
-
-        <div class="chart-panel chart-panel--clock" data-zoomable>
-            <button class="chart-close" type="button">&times;</button>
-
-            <div class="chart-content chart-content--clock">
-                <h2 class="chart-title">When during the day is crash risk highest?</h2>
-                <div id="clock-visualization">
-                    <!-- Main flexbox container -->
-                    <div class="clock-main-container">
-                        <!-- Clock container (left side) -->
-                        <div class="clock-container">
-                            <!-- Button container -->
-                            <div class="clock-buttons">
-                                <button id="day-mode-btn" class="btn btn-primary">☀️ Night ~ Morning (12am-12pm)</button>
-                                <button id="night-mode-btn" class="btn btn-outline-primary">🌙 Afternoon ~ Night (12pm-12am)</button>
-                            </div>
-                            <!-- Clock SVG will be inserted here -->
-                            <!-- Legend container -->
-                            <div class="clock-legend">
-                                <!-- Legend SVG will be inserted here -->
-                            </div>
-                        </div>
-                        
-                        <!-- Line chart container (right side) -->
-                        <div class="line-chart-container">
-                            <!-- Line chart SVG will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-                <div id="risk-banner"></div>
-                <div id="tooltip" style="position:absolute; pointer-events:none; display:none;"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Panel 4 – leaves the house -->
-    <section class="panel panel-4">
-        <p class="panel-caption">“He steps outside, ready to start his journey to work.”</p>
-        <img src="img/panel4.png" alt="Driver leaves home" class="panel-image">
-    </section>
-
-    <!-- Panel 5 – starts the car -->
-    <section class="panel panel-5">
-        <p class="panel-caption">“With a turn of the key, the engine hums to 9-to-5 life.”</p>
-        <img src="img/panel5.png" alt="Driver starts the car" class="panel-image">
-    </section>
-
-    <!-- Panel 6 – sees speed limit sign (speed-limit vis) -->
-    <section class="panel panel-6">
-        <p class="panel-caption">“A speed-limit sign reminds him how speed affects safety.” Click the speed sign!</p>
-        <img src="img/panel6.png" alt="Driver sees speed limit sign" class="panel-image">
-
-        <div class="chart-panel chart-panel--speed" data-zoomable>
-            <button class="chart-close" type="button">&times;</button>
-
-            <div class="chart-content chart-content--speed">
-                <h2 class="chart-title">Crashes by posted speed limit</h2>
-                <div class="speed-controls" id="car-speed-limit-crashes-vis-nathan-controls">
-                    <label for="car-speed-limit-crashes-vis-nathan-year-select">Select Year:</label>
-                    <select id="car-speed-limit-crashes-vis-nathan-year-select"></select>
-                </div>
-
-                <div id="car-speed-limit-crashes-vis-nathan"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Panel 7 – multiple road types / road-type chart -->
-    <section class="panel panel-7">
-        <p class="panel-caption">“Different roads lie ahead, each with its own risks.” Click the navigation panel.</p>
-        <img src="img/panel7.png" alt="Driver choosing between different road types" class="panel-image">
-
-        <div class="chart-panel chart-panel--roadtype" data-zoomable>
-            <button class="chart-close" type="button">&times;</button>
-            <div class="chart-content chart-content--roadtype">
-                <section class="roadtype-section">
-                    <header class="roadtype-header text-center">
-                        <h2>Road Collisions by Roadway Type</h2>
-                        <p>Circular bar chart showing collision data by road division type across years</p>
-                    </header>
-
-                    <div class="roadtype-content">
-                        <div class="roadtype-chart-panel">
-                            <div id="chart" class="roadtype-chart"></div>
-                            <div class="tooltip roadtype-tooltip"></div>
-                        </div>
-
-                        <div class="roadtype-controls">
-                            <div class="roadtype-filter-section">
-                                <div class="roadtype-section-title">View Mode:</div>
-                                <div class="roadtype-view-toggle">
-                                    <button class="toggle-btn roadtype-toggle-btn active" data-view="detailed">Detailed View</button>
-                                    <button class="toggle-btn roadtype-toggle-btn" data-view="combined">Combined View</button>
-                                </div>
-                            </div>
-
-                            <div class="roadtype-slider-container">
-                                <div class="roadtype-slider-label">
-                                    <span>Select Year Range:</span>
-                                    <span id="yearRangeDisplay">1999 - 2021 (avg: 2010)</span>
-                                </div>
-                                <div id="roadtype-year-range" class="roadtype-year-range"></div>
-                            </div>
-
-                            <div class="roadtype-filter-section">
-                                <div class="roadtype-section-title">Filter Road Types (click to toggle):</div>
-                                <div id="roadtype-legend" class="legend roadtype-legend"></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>
-
-    <!-- Panel 8 – arrives to work -->
-    <section class="panel panel-8">
-        <p class="panel-caption">“He reaches work safely and gets ready for the day.”</p>
-        <img src="img/panel8.png" alt="Driver arrives to work" class="panel-image">
-    </section>
-
-    <!-- Panel 9 – thinks about vacation -->
-    <section class="panel panel-9">
-        <p class="panel-caption">“His mind wanders... Maybe a vacation would be nice…”</p>
-        <img src="img/panel9.png" alt="Driver thinks about vacation" class="panel-image">
-    </section>
-
-    <!-- Panel 10 – calendar (monthly circular chart) -->
-    <section class="panel panel-10">
-        <p class="panel-caption">“He checks the calendar to find the safest month for a trip.” Click the calendar.</p>
-        <img src="img/panel10.png" alt="Driver checks calendar for safest month" class="panel-image">
-
-        <div class="chart-panel chart-panel--month" data-zoomable>
-            <button class="chart-close" type="button">&times;</button>
-            <div class="chart-content chart-content--month">
-                <section class="circular-chart-section">
-                    <header class="text-center mb-4">
-                        <h2>When Do Most Collisions Occur Throughout the Year?</h2>
-                        <p>Explore monthly collision patterns in a circular visualization. Select a year to see how collision rates vary across different months.</p>
-                    </header>
-
-                    
-                    <div class="controls text-center mb-4">
-                        <label for="year-selector" class="me-2 fw-bold">Select Year:</label>
-                        <select id="year-selector" class="form-select form-select-sm d-inline-block w-auto"></select>
-                    </div>
-
-                    
-                    <div class="chart-card">
-                        <div id="circular-bar-chart" class="d-flex justify-content-center"></div>
-                        <div id="circular-legend" class="d-flex justify-content-center mt-3"></div>
-                        <p class="text-center text-muted mt-3 mb-0">
-                            <small>Source: <code>data/collisions_by_month.csv</code></small>
-                        </p>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>
-
-    <!-- Panel 11 – talks to boss -->
-    <section class="panel panel-11">
-        <p class="panel-caption">“He asks his boss about taking some time off.”</p>
-        <img src="img/panel11.png" alt="Driver talks to boss" class="panel-image">
-    </section>
-
-    <!-- Panel 12 – vacation approved -->
-    <section class="panel panel-12">
-        <p class="panel-caption">“Great news! His vacation is approved. A happy free man.”</p>
-        <img src="img/panel12.png" alt="Boss approves vacation" class="panel-image">
-    </section>
-
-    <!-- Panel 13 – drives into sunset -->
-    <section class="panel panel-13">
-        <p class="panel-caption">“With everything planned, he drives into his long-awaited adventure.” THE END</p>
-        <img src="img/panel13.png" alt="Driver starts road-trip vacation" class="panel-image">
-    </section>
-</main>
-
-<!-- Footer -->
-<footer class="footer mt-auto py-4 bg-dark text-light" id="about">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 mb-3 mb-md-0 text-center text-md-start">
-                <h6 class="fw-bold mb-3">Data Sources</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-2"><i class="bi bi-database me-2"></i>Template</li>
-                    <li class="mb-2"><i class="bi bi-database me-2"></i>Template</li>
-                    <li><i class="bi bi-database me-2"></i>Template</li>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#visualizations">Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
                 </ul>
             </div>
-            <div class="col-md-6 text-center text-md-end">
-                <h6 class="fw-bold mb-3">Project Information</h6>
-                <p class="small text-light-emphasis">CSC316 Final Project<br>Data Visualization &amp; Analysis</p>
-            </div>
         </div>
-        <hr class="my-3 border-secondary">
-        <div class="row">
-            <div class="col-12 text-center">
-                <p class="small mb-0 text-light-emphasis">Built By: ... ... ... ... ... ...</p>
-            </div>
-        </div>
-    </div>
-</footer>
+    </nav>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- PapaParse for CSV parsing -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-<!-- JS -->
-<script src="js/speedLimitVisSigns.js"></script>
-<script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
-<script src="js/calendar-heatmap.js"></script>
-<script src="js/circularBarChart.js"></script>
-<script src="js/collision_by_roadtype.js"></script>
-<script src="js/main.js"></script>
+    <!-- Webtoon + visualizations -->
+    <main id="visualizations" class="webtoon">
+
+        <!-- Panel 1 – wakes up -->
+        <section class="panel panel-1">
+            <p class="panel-caption">"A brand-new day begins as our driver slowly wakes up."</p>
+            <img src="img/panel1.png" alt="Driver wakes up" class="panel-image">
+        </section>
+
+        <!-- Panel 2 – heatmap page -->
+        <section class="panel panel-2">
+            <p class="panel-caption">
+                He checks his phone to see which days are safest to travel. Tap the phone to explore.
+            </p>
+            <img src="img/panel2.png" alt="Driver checks his phone" class="panel-image">
+
+            <!-- Heatmap inside panel 2 (mini + zoom) -->
+            <div class="chart-panel chart-panel--heatmap" data-zoomable>
+                <button class="chart-close" type="button">&times;</button>
+
+                <div class="chart-content chart-content--heatmap">
+                    <section class="heatmap-section">
+                        <header class="heatmap-header">
+                            <h2>Collisions by Weekday × Year</h2>
+                            <p>
+                                This calendar-style heatmap shows crash counts by weekday (columns) and year (rows).
+                                Use the year range below to filter.
+                            </p>
+                        </header>
+
+                        <section class="heatmap-card">
+                            <!-- Car PNG background + floating heatmap -->
+                            <section class="car-section">
+                                <img src="img/car_background.png" class="car-fullwidth" alt="car background">
+                                <div class="heatmap-floating-panel">
+                                    <div id="heatmap" class="chart"></div>
+                                </div>
+                            </section>
+
+                            <!-- Controls + legend -->
+                            <section class="controls-section">
+                                <div class="heatmap-year-range" id="year-range"></div>
+                                <div class="heatmap-legend" id="legend"></div>
+                            </section>
+                        </section>
+
+                        <p class="heatmap-source">
+                            Source: <code>data/collisions_by_weekday_cleaned.csv</code>. Hover cells for details.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Panel 3 – brushing teeth, wall clock (time-of-day radial chart) -->
+        <section class="panel panel-3">
+            <p class="panel-caption">“While brushing his teeth, he wonders which time of day is safest.” Click the
+                clock!.</p>
+            <img src="img/panel3.png" alt="Driver brushes teeth and looks at clock" class="panel-image">
+
+            <div class="chart-panel chart-panel--clock" data-zoomable>
+                <button class="chart-close" type="button">&times;</button>
+
+                <div class="chart-content chart-content--clock">
+                    <h2 class="chart-title">When during the day is crash risk highest?</h2>
+                    <div id="clock-visualization">
+                        <!-- Main flexbox container -->
+                        <div class="clock-main-container">
+                            <!-- Clock container (left side) -->
+                            <div class="clock-container">
+                                <!-- Button container -->
+                                <div class="clock-buttons">
+                                    <button id="day-mode-btn" class="btn btn-primary">☀️ Night ~ Morning
+                                        (12am-12pm)</button>
+                                    <button id="night-mode-btn" class="btn btn-outline-primary">🌙 Afternoon ~ Night
+                                        (12pm-12am)</button>
+                                </div>
+                                <!-- Clock SVG will be inserted here -->
+                                <!-- Legend container -->
+                                <div class="clock-legend">
+                                    <!-- Legend SVG will be inserted here -->
+                                </div>
+                            </div>
+
+                            <!-- Line chart container (right side) -->
+                            <div class="line-chart-container">
+                                <!-- Line chart SVG will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div id="risk-banner"></div>
+                    <div id="tooltip" style="position:absolute; pointer-events:none; display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 4 – leaves the house -->
+        <section class="panel panel-4">
+            <p class="panel-caption">“He steps outside, ready to start his journey to work.”</p>
+            <img src="img/panel4.png" alt="Driver leaves home" class="panel-image">
+        </section>
+
+        <!-- Panel 5 – starts the car -->
+        <section class="panel panel-5">
+            <p class="panel-caption">“With a turn of the key, the engine hums to 9-to-5 life.”</p>
+            <img src="img/panel5.png" alt="Driver starts the car" class="panel-image">
+        </section>
+
+        <!-- Panel 6 – sees speed limit sign (speed-limit vis) -->
+        <section class="panel panel-6">
+            <p class="panel-caption">“A speed-limit sign reminds him how speed affects safety.” Click the speed sign!
+            </p>
+            <img src="img/panel6.png" alt="Driver sees speed limit sign" class="panel-image">
+
+            <div class="chart-panel chart-panel--speed" data-zoomable>
+                <button class="chart-close" type="button">&times;</button>
+
+                <div class="chart-content chart-content--speed">
+                    <h2 class="chart-title">Crashes by posted speed limit</h2>
+                    <div class="speed-controls" id="car-speed-limit-crashes-vis-nathan-controls">
+                        <label for="car-speed-limit-crashes-vis-nathan-year-select">Select Year:</label>
+                        <select id="car-speed-limit-crashes-vis-nathan-year-select"></select>
+                    </div>
+
+                    <div id="car-speed-limit-crashes-vis-nathan"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 7 – multiple road types / road-type chart -->
+        <section class="panel panel-7">
+            <p class="panel-caption">“Different roads lie ahead, each with its own risks.” Click the navigation panel.
+            </p>
+            <img src="img/panel7.png" alt="Driver choosing between different road types" class="panel-image">
+
+            <div class="chart-panel chart-panel--roadtype" data-zoomable>
+                <button class="chart-close" type="button">&times;</button>
+                <div class="chart-content chart-content--roadtype">
+                    <section class="roadtype-section">
+                        <header class="roadtype-header text-center">
+                            <h2>Road Collisions by Roadway Type</h2>
+                            <p>Circular bar chart showing collision data by road division type across years</p>
+                        </header>
+
+                        <div class="roadtype-content">
+                            <div class="roadtype-chart-panel">
+                                <div id="chart" class="roadtype-chart"></div>
+                                <div class="tooltip roadtype-tooltip"></div>
+                            </div>
+
+                            <div class="roadtype-controls">
+                                <div class="roadtype-filter-section">
+                                    <div class="roadtype-section-title">View Mode:</div>
+                                    <div class="roadtype-view-toggle">
+                                        <button class="toggle-btn roadtype-toggle-btn active"
+                                            data-view="detailed">Detailed View</button>
+                                        <button class="toggle-btn roadtype-toggle-btn" data-view="combined">Combined
+                                            View</button>
+                                    </div>
+                                </div>
+
+                                <div class="roadtype-slider-container">
+                                    <div class="roadtype-slider-label">
+                                        <span>Select Year Range:</span>
+                                        <span id="yearRangeDisplay">1999 - 2021 (avg: 2010)</span>
+                                    </div>
+                                    <div id="roadtype-year-range" class="roadtype-year-range"></div>
+                                </div>
+
+                                <div class="roadtype-filter-section">
+                                    <div class="roadtype-section-title">Filter Road Types (click to toggle):</div>
+                                    <div id="roadtype-legend" class="legend roadtype-legend"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 8 – arrives to work -->
+        <section class="panel panel-8">
+            <p class="panel-caption">“He reaches work safely and gets ready for the day.”</p>
+            <img src="img/panel8.png" alt="Driver arrives to work" class="panel-image">
+        </section>
+
+        <!-- Panel 9 – thinks about vacation -->
+        <section class="panel panel-9">
+            <p class="panel-caption">“His mind wanders... Maybe a vacation would be nice…”</p>
+            <img src="img/panel9.png" alt="Driver thinks about vacation" class="panel-image">
+        </section>
+
+        <!-- Panel 10 – calendar (monthly circular chart) -->
+        <section class="panel panel-10">
+            <p class="panel-caption">“He checks the calendar to find the safest month for a trip.” Click the calendar.
+            </p>
+            <img src="img/panel10.png" alt="Driver checks calendar for safest month" class="panel-image">
+
+            <div class="chart-panel chart-panel--month" data-zoomable>
+                <button class="chart-close" type="button">&times;</button>
+                <div class="chart-content chart-content--month">
+                    <section class="circular-chart-section">
+                        <header class="text-center mb-4">
+                            <h2>When Do Most Collisions Occur Throughout the Year?</h2>
+                            <p>Explore monthly collision patterns in a circular visualization. Select a year to see how
+                                collision rates vary across different months.</p>
+                        </header>
+
+
+                        <div class="controls text-center mb-4">
+                            <label for="year-selector" class="me-2 fw-bold">Select Year:</label>
+                            <select id="year-selector"
+                                class="form-select form-select-sm d-inline-block w-auto"></select>
+                        </div>
+
+
+                        <div class="chart-card">
+                            <div id="circular-bar-chart" class="d-flex justify-content-center"></div>
+                            <div id="circular-legend" class="d-flex justify-content-center mt-3"></div>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                <small>Source: <code>data/collisions_by_month.csv</code></small>
+                            </p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 11 – talks to boss -->
+        <section class="panel panel-11">
+            <p class="panel-caption">“He asks his boss about taking some time off.”</p>
+            <img src="img/panel11.png" alt="Driver talks to boss" class="panel-image">
+        </section>
+
+        <!-- Panel 12 – vacation approved -->
+        <section class="panel panel-12">
+            <p class="panel-caption">“Great news! His vacation is approved. A happy free man.”</p>
+            <img src="img/panel12.png" alt="Boss approves vacation" class="panel-image">
+        </section>
+
+        <!-- Panel 13 – drives into sunset -->
+        <section class="panel panel-13">
+            <p class="panel-caption">“With everything planned, he drives into his long-awaited adventure.” THE END</p>
+            <img src="img/panel13.png" alt="Driver starts road-trip vacation" class="panel-image">
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-4 bg-dark text-light" id="about">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 mb-3 mb-md-0 text-center text-md-start">
+                    <h6 class="fw-bold mb-3">Data Sources</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><i class="bi bi-database me-2"></i>Template</li>
+                        <li class="mb-2"><i class="bi bi-database me-2"></i>Template</li>
+                        <li><i class="bi bi-database me-2"></i>Template</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <h6 class="fw-bold mb-3">Project Information</h6>
+                    <p class="small text-light-emphasis">CSC316 Final Project<br>Data Visualization &amp; Analysis</p>
+                </div>
+            </div>
+            <hr class="my-3 border-secondary">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="small mb-0 text-light-emphasis">Built By: ... ... ... ... ... ...</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- JS -->
+    <script src="js/speedLimitVisSigns.js"></script>
+    <script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
+    <script src="js/calendar-heatmap.js"></script>
+    <script src="js/circularBarChart.js"></script>
+    <script src="js/collision_by_roadtype.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
+
 </html>
