@@ -222,7 +222,67 @@
   .comic-arrow:active {
     transform: translateY(-50%) scale(0.96);
   }
-  
+
+  /* PROGRESS INDICATOR */
+  .progress-indicator {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 12px 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .progress-indicator.visible {
+    opacity: 1;
+  }
+
+  .progress-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: 2px solid #9ca3af;
+    transition: all 0.3s ease;
+  }
+
+  .progress-dot.active {
+    width: 12px;
+    height: 12px;
+    background: #facc15;
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
+  }
+
+  .progress-text {
+    font-family: "Bangers", system-ui;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: 0.05em;
+  }
+
+  .progress-text span {
+    color: #0080ff;
+  }
+
   /* SCROLL LENGTH (JS dynamically sets height) */
   .comic-scroll-length {
     height: 0;
@@ -480,6 +540,18 @@
   transform: rotate(-6deg);
   box-shadow: 4px 4px 0 #000;
   font-family: "ShadowsIntoLight";
+  animation: bubble-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bubble-pulse {
+  0%, 100% {
+    transform: rotate(-6deg) scale(1);
+    box-shadow: 4px 4px 0 #000;
+  }
+  50% {
+    transform: rotate(-6deg) scale(1.05);
+    box-shadow: 6px 6px 0 #000;
+  }
 }
 
 .panel-bubble::after {

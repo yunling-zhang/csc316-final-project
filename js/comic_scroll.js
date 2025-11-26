@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ".comic-scroll-length");
   const leftBtn = document.getElementById("comic-arrow-prev");
   const rightBtn = document.getElementById("comic-arrow-next");
+  const progressIndicator = document.getElementById("progress-indicator");
+  const progressDotsContainer = progressIndicator?.querySelector(".progress-dots");
+  const currentPanelSpan = document.getElementById("current-panel");
+  const totalPanelsSpan = document.getElementById("total-panels");
 
   if (!hero || !track || !scrollLengthEl || panels.length === 0) return;
 
@@ -77,6 +81,53 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ----------------------
+  // PROGRESS INDICATOR
+  // ----------------------
+
+  function initializeProgressIndicator() {
+    if (!progressIndicator || !progressDotsContainer || !totalPanelsSpan) return;
+
+    // Set total panels
+    totalPanelsSpan.textContent = panels.length;
+
+    // Create dots for each panel
+    progressDotsContainer.innerHTML = '';
+    panels.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'progress-dot';
+      dot.dataset.index = i;
+      progressDotsContainer.appendChild(dot);
+    });
+
+    // Show indicator after scrolling past hero
+    updateProgressIndicator(0);
+  }
+
+  function updateProgressIndicator(index) {
+    if (!progressIndicator || !progressDotsContainer || !currentPanelSpan) return;
+
+    // Update text
+    currentPanelSpan.textContent = index + 1;
+
+    // Update dots
+    const dots = progressDotsContainer.querySelectorAll('.progress-dot');
+    dots.forEach((dot, i) => {
+      if (i === index) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+
+    // Show/hide indicator based on scroll position
+    if (window.scrollY > hero.offsetHeight * 0.3) {
+      progressIndicator.classList.add('visible');
+    } else {
+      progressIndicator.classList.remove('visible');
+    }
+  }
+
+  // ----------------------
   // LAYOUT + MEASURE
   // ----------------------
 
@@ -142,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (clampedIndex !== activeIndex) {
       activeIndex = clampedIndex;
+      updateProgressIndicator(activeIndex);
 
       // Target camera Y so that active panel is vertically centered (neutralize its lane)
       const lane = laneOffsets[activeIndex] ?? 0;
@@ -157,6 +209,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function onScroll() {
     applyTransform(window.scrollY);
+
+    // Update progress indicator visibility on scroll
+    if (progressIndicator) {
+      if (window.scrollY > hero.offsetHeight * 0.3) {
+        progressIndicator.classList.add('visible');
+      } else {
+        progressIndicator.classList.remove('visible');
+      }
+    }
 
     if (isSnapping) return;
 
@@ -260,11 +321,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function init() {
     setupLayout();
+    initializeProgressIndicator();
   }
 
   // Run once DOM is ready, then once more after images fully load
   init();
-  window.addEventListener("load", setupLayout);
+  window.addEventListener("load", () => {
+    setupLayout();
+    initializeProgressIndicator();
+  });
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
