@@ -1,1 +1,139 @@
+/* speedLimitVisSigns.css */
 
+* {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top left, #f8fafc, #e2e8f0);
+    color: #111827;
+    overflow-x: hidden; /* no horizontal scroll inside iframe */
+  }
+  
+  .speed-page {
+    min-height: 100vh;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .speed-card {
+    width: min(1200px, 100%);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow:
+      0 18px 45px rgba(15, 23, 42, 0.18),
+      0 4px 8px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e2e8f0;
+    padding: 24px 24px 28px 24px;
+  }
+  
+  /* Header text */
+  .speed-header h1 {
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    font-size: clamp(22px, 2.6vw, 32px);
+    letter-spacing: 0.02em;
+    color: #0f172a;
+  }
+  
+  .speed-header p {
+    margin: 0 0 12px 0;
+    font-size: 0.98rem;
+    color: #4b5563;
+  }
+  
+  /* Main visualization container */
+  #car-speed-limit-crashes-vis-nathan {
+    margin-top: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    width: 100%;
+    max-width: 1280px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  #car-speed-limit-crashes-vis-nathan svg {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Controls block (JS will add the elements, this just styles them) */
+  #car-speed-limit-crashes-vis-nathan-controls {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+  }
+  
+  #car-speed-limit-crashes-vis-nathan-controls label {
+    font-weight: 700;
+    color: #1e293b;
+  }
+  
+  #car-speed-limit-crashes-vis-nathan-year-select {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid #3b82f6;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  #car-speed-limit-crashes-vis-nathan-year-select:hover {
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Axis + road/sign styling – matches original palette */
+  .road {
+    fill: #4b5563;
+    opacity: 0.25;
+  }
+  
+  .sign-circle {
+    stroke: #d62828;
+    stroke-width: 3px;
+    fill: #ffffff;
+  }
+  
+  .sign-text {
+    font-weight: 900;
+    fill: #111111;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+  }
+  
+  .x-axis text {
+    font-size: 12px;
+    fill: #4b5563;
+  }
+  
+  .y-axis text {
+    font-size: 12px;
+    fill: #4b5563;
+    font-weight: 500;
+  }
+  
+  .y-axis .domain {
+    stroke: #9ca3af;
+  }
+  

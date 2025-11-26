@@ -684,3 +684,24 @@ function initializeClockVisualization(rawData) {
 
     updateClockHands(colorScale, allTimeSegments, svg);
 }
+
+// ----------------------------------------------------------
+// Standalone page bootstrap (for clockVis.html in the popup)
+// ----------------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    // Only run this auto-loader on the standalone clock page
+    if (!document.querySelector(".clock-page")) return;
+  
+    d3.csv("data/col_hour_full.csv")
+      .then(rawData => {
+        if (typeof initializeClockVisualization === "function") {
+          initializeClockVisualization(rawData);
+        } else {
+          console.error("initializeClockVisualization is not defined.");
+        }
+      })
+      .catch(err => {
+        console.error("Failed to load clock CSV data:", err);
+      });
+  });
+  

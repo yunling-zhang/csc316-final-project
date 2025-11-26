@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crash Risk by Time of Day</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+
+  <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/comic.css">
+
+    <link rel="stylesheet" href="css/clockVis.css"> 
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <main class="clock-page">
+    <section class="clock-section">
+      <h1 class="clock-title">When during the day is crash risk highest?</h1>
+
+      <div id="clock-visualization">
+        <!-- Main flexbox container -->
+        <div class="clock-main-container">
+          <!-- Clock container (left side) -->
+          <div class="clock-container">
+            <!-- Button container -->
+            <div class="clock-buttons">
+              <button id="day-mode-btn" class="btn btn-primary">
+                ☀️ Night ~ Morning (12am–12pm)
+              </button>
+              <button id="night-mode-btn" class="btn btn-outline-primary">
+                🌙 Afternoon ~ Night (12pm–12am)
+              </button>
+            </div>
+
+            <!-- Legend container -->
+            <div class="clock-legend">
+              <!-- Legend SVG will be inserted here -->
+            </div>
+          </div>
+
+          <!-- Line chart container (right side) -->
+          <div class="line-chart-container">
+            <!-- Line chart SVG will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <div id="risk-banner"></div>
+    </section>
+  </main>
+
+  <script src="js/clockVis.js"></script>
+</body>
+</html>

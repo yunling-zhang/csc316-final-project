@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Collisions by Month of Year</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" href="css/circularBarChart.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <main class="circular-page">
+    <section class="circular-chart-section">
+      <header class="circular-header">
+        <h2>Collisions by Month of Year</h2>
+        <p>Explore how collision counts change across the year.</p>
+      </header>
+
+      <div class="circular-layout">
+        <div class="circular-chart-wrapper">
+          <div id="circular-bar-chart"></div>
+        </div>
+
+        <aside class="circular-controls">
+          <label for="year-selector">Year:</label>
+          <select id="year-selector"></select>
+
+          <div id="circular-legend" class="circular-legend"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/circularBarChart.js"></script>
+</body>
+</html>

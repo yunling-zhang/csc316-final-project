@@ -15,7 +15,10 @@
   <!-- Existing styles + comic layout -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/comic.css">
+  <link href="https://fonts.cdnfonts.com/css/shadow-light" rel="stylesheet">
 </head>
+
+
 <body class="comic-body">
 
     <!-- Full-screen header -->
@@ -52,8 +55,9 @@
       <!-- Panel 2 – checks phone (weekday heatmap) -->
       <article class="comic-panel" data-panel-index="1">
         <div class="comic-panel-inner">
-          <p class="panel-caption">"He checks his phone to see which days are safest to travel.” Click the phone!</p>
+          <p class="panel-caption">"He checks his phone to see which days are safest to travel.” </p>
           <img src="img/panel2.png" alt="Driver checks phone" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
 
           <div class="chart-panel chart-panel--heatmap" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
@@ -82,8 +86,10 @@
       <!-- Panel 3 – brushing teeth, wall clock -->
       <article class="comic-panel" data-panel-index="2">
         <div class="comic-panel-inner">
-          <p class="panel-caption">“While brushing his teeth, he wonders which time of day is safest.” Click the clock!.</p>
+          <p class="panel-caption">“While brushing his teeth, he wonders which time of day is safest.”</p>
           <img src="img/panel3.png" alt="Driver brushes teeth and looks at clock" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+          
 
           <div class="chart-panel chart-panel--clock" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
@@ -114,8 +120,9 @@
       <!-- Panel 6 – speed limit sign, speed-limit visualization -->
       <article class="comic-panel" data-panel-index="5">
         <div class="comic-panel-inner">
-          <p class="panel-caption">“A speed-limit sign reminds him how speed affects safety.” Click the speed sign!</p>
+          <p class="panel-caption">“A speed-limit sign reminds him how speed affects safety.” </p>
           <img src="img/panel6.png" alt="Speed limit sign" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
 
           <div class="chart-panel chart-panel--speed" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
@@ -133,8 +140,9 @@
       <!-- Panel 7 – multiple road types / road-type chart -->
       <article class="comic-panel" data-panel-index="6">
         <div class="comic-panel-inner">
-          <p class="panel-caption">“Different roads lie ahead, each with its own risks.” Click the navigation panel.</p>
+          <p class="panel-caption">“Different roads lie ahead, each with its own risks.” </p>
           <img src="img/panel7.png" alt="Driver choosing between different road types" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
 
           <div class="chart-panel chart-panel--roadtype" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
@@ -200,8 +208,9 @@
       <!-- Panel 10 – calendar month chart -->
       <article class="comic-panel" data-panel-index="9">
         <div class="comic-panel-inner">
-          <p class="panel-caption">“He checks the calendar to find the safest month for a trip.” Click the calendar.</p>
+          <p class="panel-caption">“He checks the calendar to find the safest month for a trip.” </p>
           <img src="img/panel10.png" alt="Calendar panel" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
 
           <div class="chart-panel chart-panel--month" data-zoomable>
             <button class="chart-close" type="button">&times;</button>
@@ -209,6 +218,7 @@
               <h2>Collisions by Month of Year</h2>
               <p>Circular bar chart of collision counts by month.</p>
               <div id="circular-bar-chart"></div>
+              
             </section>
           </div>
         </div>
@@ -244,8 +254,7 @@
 
   <div class="comic-scroll-length"></div>
 
-</div>
-  
+
   <!-- UNIVERSAL VISUALIZATION POPUP -->
 <div id="viz-popup-overlay" class="viz-popup-overlay">
   <div id="viz-popup-content" class="viz-popup-content">
@@ -254,11 +263,10 @@
   </div>
 </div>
 
-  <!-- Visualization scripts (same as index.html) -->
-  <script src="js/calendar-heatmap.js"></script>
-  <script src="js/speedLimitVisSigns.js"></script>
-  <script src="js/collision_by_roadtype.js"></script>
-  <script src="js/circularBarChart.js"></script>
+  <script src="z_individual_visuals/heatmap/js/calendar-heatmap.js"></script>
+  <script src="z_individual_visuals/speed_limit/js/speedLimitVisSigns.js"></script>
+  <script src="z_individual_visuals/circular_bar_month/js/circularBarChart.js"></script>
+  <script src="z_individual_visuals/collision_by_roadtypes/js/collision_by_roadtype.js"></script>
   <script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
 
   <!-- Generic viz interactions (zooming, etc.) -->
@@ -267,5 +275,6 @@
   <!-- Scroll + arrow controller -->
   <script src="js/comic_scroll.js"></script>
   <script src="js/viz_popup.js"></script>
+  <script src="js/panels.js"></script>
 </body>
 </html>

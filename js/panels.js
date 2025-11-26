@@ -151,3 +151,28 @@
     // you can paste that unchanged below this line.
   })();
   
+const PANEL_VIZ_MAP = {
+  2: "heatmap",
+  3: "clock",
+  6: "speed_limit",
+  7: "road_types",
+  10: "circular_bar"
+};
+
+// ADD THIS function to use standardized file locations
+export function getVizURLForPanel(panelNum) {
+  switch (PANEL_VIZ_MAP[panelNum]) {
+    case "heatmap":
+      return "z_individual_visuals/heatmap/heatmap_index.html";
+    case "clock":
+      return "z_individual_visuals/clockVis/clockVis.html";  // If index missing, create later
+    case "speed_limit":
+      return "z_individual_visuals/speed_limit/speedLimitVisSigns_index.html";
+    case "road_types":
+      return "z_individual_visuals/collision_by_roadtypes/collision_by_roadtype.html";
+    case "circular_bar":
+      return "z_individual_visuals/circular_bar_month/circularBarChart_index.html"; // create later if missing
+    default:
+      return null;
+  }
+}
