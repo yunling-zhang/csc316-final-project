@@ -1,36 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Collisions by Month of Year</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Collision Circular Bar Chart</title>
 
-  <link rel="stylesheet" href="css/circularBarChart.css">
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/circularBarChart.css">
 </head>
+
 <body>
-  <main class="circular-page">
-    <section class="circular-chart-section">
-      <header class="circular-header">
-        <h2>Collisions by Month of Year</h2>
-        <p>Explore how collision counts change across the year.</p>
-      </header>
+    <main class="container-fluid py-4">
+        <section class="circular-chart-section">
+            <header class="text-center mb-4">
+                <h2>When Do Most Collisions Occur Throughout the Year?</h2>
+                <p>Explore monthly collision patterns in a circular visualization. Select a year to see how
+                    collision rates vary across different months.</p>
+            </header>
 
-      <div class="circular-layout">
-        <div class="circular-chart-wrapper">
-          <div id="circular-bar-chart"></div>
-        </div>
+            <div class="controls text-center mb-4">
+                <label for="year-selector" class="me-2 fw-bold">Select Year:</label>
+                <select id="year-selector" class="form-select form-select-sm d-inline-block w-auto"></select>
+            </div>
 
-        <aside class="circular-controls">
-          <label for="year-selector">Year:</label>
-          <select id="year-selector"></select>
+            <div class="chart-card">
+                <div id="circular-bar-chart" class="d-flex justify-content-center"></div>
+                <div id="circular-legend" class="d-flex justify-content-center mt-3"></div>
+                <p class="text-center text-muted mt-3 mb-0">
+                    <small>Source: <code>data/collisions_by_month.csv</code></small>
+                </p>
+            </div>
+        </section>
+    </main>
 
-          <div id="circular-legend" class="circular-legend"></div>
-        </aside>
-      </div>
-    </section>
-  </main>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Circular Bar Chart JS -->
+    <script src="../../js/circularBarChart.js"></script>
 
-  <script src="js/circularBarChart.js"></script>
+    <script>
+        // Load and initialize the circular bar chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataPath = '../../data/collisions_by_month.csv';
+
+            d3.text(dataPath).then(text => {
+                console.log('Monthly collisions text loaded');
+
+                const monthlyData = parseMonthlyCSVText(text);
+                console.log('Parsed monthly data:', monthlyData);
+
+                if (monthlyData && monthlyData.length > 0) {
+                    window.monthlyChartData = monthlyData;
+
+                    setTimeout(() => {
+                        initializeCircularChart(monthlyData);
+                    }, 100);
+                } else {
+                    console.error('Failed to parse monthly data');
+                }
+            }).catch(error => {
+                console.error('Error loading monthly collisions CSV:', error);
+            });
+        });
+    </script>
 </body>
+
 </html>
