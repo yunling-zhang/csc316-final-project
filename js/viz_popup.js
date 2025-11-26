@@ -32,10 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
       url: "z_individual_visuals/clockVis/clockVis.html"
     },
 
-    // Panel 6 – speed limit (CLONE from inline chart-panel)
+    // Panel 6 – speed limit (iframe)
     5: {
-      mode: "clone",
-      panelSelector: '.comic-panel[data-panel-index="5"] .chart-panel--speed'
+      mode: "iframe",
+      url: "z_individual_visuals/speed_limit/speedLimitVisSigns_index.html"
     },
 
     // Panel 7 – road-type circular viz (iframe)
@@ -44,10 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
       url: "z_individual_visuals/collision_by_roadtypes/collision_by_roadtype.html"
     },
 
-    // Panel 10 – circular bar by month (CLONE from inline chart-panel)
+    // Panel 10 – circular bar by month (iframe)
     9: {
-      mode: "clone",
-      panelSelector: '.comic-panel[data-panel-index="9"] .chart-panel--month'
+      mode: "iframe",
+      url: "z_individual_visuals/circular_bar_month/circularBarChart_index.html"
     }
   };
 
