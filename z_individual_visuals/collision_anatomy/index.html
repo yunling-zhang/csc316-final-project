@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collision Anatomy Visualization</title>
+
+  <!-- D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/anatomy.css">
+</head>
+<body>
+  <!-- Main Visualization Container -->
+  <div id="collision-anatomy-viz"></div>
+
+  <!-- Scripts -->
+  <script src="js/processData.js"></script>
+  <script src="js/collision-anatomy.js"></script>
+
+  <script>
+    // Initialize the visualization
+    initCollisionAnatomy('#collision-anatomy-viz', '../../data/impact_maneuver_data.csv');
+  </script>
+</body>
+</html>

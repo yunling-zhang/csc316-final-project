@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // data-panel-index in comic.html:
   //   1 = Panel 2 (heatmap)
   //   2 = Panel 3 (clock)
+  //   4 = Panel 5 (collision anatomy)
   //   5 = Panel 6 (speed limit)
   //   6 = Panel 7 (road type)
   //   9 = Panel 10 (month circular bar)
@@ -30,6 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     2: {
       mode: "iframe",
       url: "z_individual_visuals/clockVis/clockVis.html"
+    },
+
+    // Panel 5 – collision anatomy (iframe)
+    4: {
+      mode: "iframe",
+      url: "z_individual_visuals/collision_anatomy/index.html"
     },
 
     // Panel 6 – speed limit (iframe)

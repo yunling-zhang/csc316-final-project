@@ -15,6 +15,7 @@
   <!-- Existing styles + comic layout -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/comic.css">
+  <link rel="stylesheet" href="z_individual_visuals/collision_anatomy/css/anatomy.css">
   <link href="https://fonts.cdnfonts.com/css/shadow-light" rel="stylesheet">
 </head>
 
@@ -116,12 +117,28 @@
       </article>
 
       <!-- Panel 5 – starts car -->
-      <article class="comic-panel" data-panel-index="4">
-        <div class="comic-panel-inner">
-          <p class="panel-caption">“With a turn of the key, the engine hums to 9-to-5 life.”</p>
-          <img src="img/panel5.png" alt="Driver starts car" class="panel-image">
+    <article class="comic-panel" data-panel-index="4">
+      <div class="comic-panel-inner">
+        
+        <p class="panel-caption">"The engine hums. He buckles up, knowing that not all impacts are created equal."</p>
+        
+        <img src="img/panel5.png" alt="Driver starts car" class="panel-image">
+        <div class="panel-bubble">Click to explore!</div>
+
+        <div class="chart-panel chart-panel--anatomy" data-zoomable>
+          <button class="chart-close" type="button">&times;</button>
+          <div class="chart-content chart-content--anatomy">
+            
+            <header class="anatomy-header text-center" style="margin-bottom: 1rem;">
+                <h2>Collision Anatomy & Lethality Risk</h2>
+                <p>Click zones to see where crashes happen (Volume) versus where they are most deadly (Severity).</p>
+            </header>
+
+            <div id="collision-anatomy-panel"></div>
+          </div>
         </div>
-      </article>
+      </div>
+    </article>
 
       <!-- Panel 6 – speed limit sign, speed-limit visualization -->
       <article class="comic-panel" data-panel-index="5">
@@ -274,6 +291,8 @@
   <script src="z_individual_visuals/circular_bar_month/js/circularBarChart.js"></script>
   <script src="z_individual_visuals/collision_by_roadtypes/js/collision_by_roadtype.js"></script>
   <script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
+  <script src="z_individual_visuals/collision_anatomy/js/processData.js"></script>
+  <script src="z_individual_visuals/collision_anatomy/js/collision-anatomy.js"></script>
 
   <!-- Generic viz interactions (zooming, etc.) -->
   <script src="js/main.js"></script>
