@@ -2,6 +2,7 @@
   const container = d3.select("#heatmap").html("");
   const legendContainer = d3.select("#legend").html("");
   const rangeContainer = d3.select("#year-range").html("");
+  const miniContainer = d3.select("#heatmap-mini"); // phone mini preview (Panel 2)
 
   // ---------- Load CSV ----------
   let raw;
@@ -85,6 +86,10 @@
   const minYear = d3.min(allYears);
   const maxYear = d3.max(allYears);
 
+  // Default range = last 5 years (or fewer if dataset is small)
+  const defaultStartYear = Math.max(minYear, maxYear - 4);
+  const defaultEndYear = maxYear;
+
   // ---------- Main heatmap SVG ----------
   const margin = { top: 60, right: 40, bottom: 20, left: 80 };
   const width = 960;
@@ -143,6 +148,11 @@
 
   const cellsG = g.append("g").attr("class", "cells");
   const gridG = g.append("g").attr("class", "grid");
+
+  // ---------- Mini preview (phone) ----------
+  function updateMiniPreview() {
+    return;
+  }
 
   // ---------- Update function ----------
   function updateYears(yearSubset, animate = true) {
@@ -227,10 +237,13 @@
       .attr("x2", innerWidth)
       .attr("y1", d => y(d))
       .attr("y2", d => y(d));
+
+    // // Keep mini preview in sync
+    // updateMiniPreview();
   }
 
   // Initial render: all years
-  updateYears(allYears, false);
+  updateYears(d3.range(defaultStartYear, defaultEndYear + 1), false);
 
   // ---------- Year range slider / brush ----------
   const timelineContainer = rangeContainer.append("div").attr("class", "timeline-container");
@@ -278,7 +291,15 @@
   const brushSel = brushG.append("g").attr("class", "brush").call(brush);
 
   const yearsToSelection = (start, end) => [xYear(start), xYear(end)];
-  brushSel.call(brush.move, yearsToSelection(minYear, maxYear));
+  // Initialize brush to default last 5 years
+  brushSel.call(brush.move, yearsToSelection(defaultStartYear, defaultEndYear));
+
+  // Also set the initial label to match
+  rangeLabel.text(
+    `Years selected: ${defaultStartYear === defaultEndYear
+      ? defaultEndYear
+      : `${defaultStartYear}–${defaultEndYear}`}`
+  );
 
   function updateRangeLabel(y0, y1) {
     const lo = Math.min(y0, y1);
@@ -324,10 +345,11 @@
     const lo = Math.min(clampedStart, clampedEnd);
     const hi = Math.max(clampedStart, clampedEnd);
     brushSel.call(brush.move, yearsToSelection(lo, hi));
+    updateYears(d3.range(lo, hi + 1));
   }
 
   selectAllBtn.on("click", () => moveToRange(minYear, maxYear));
-  resetBtn.on("click", () => moveToRange(maxYear - 5, maxYear));
+  resetBtn.on("click", () => moveToRange(defaultStartYear, defaultEndYear));
 
   // ---------- Legend ----------
   renderLegend(legendContainer, color, vmin, vmax, width);
@@ -370,4 +392,7 @@
       .attr("class", "axis")
       .call(axisLegend);
   }
+
+  // Allow panels.js to refresh mini when modal closes
+  document.addEventListener("heatmap-update-mini", updateMiniPreview);
 })();
