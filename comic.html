@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speed Limit Crash Visualization — Comic Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap CSS (same as index.html) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- D3.js (same as index.html) -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+  <!-- Existing styles + comic layout -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/comic.css">
+  <link rel="stylesheet" href="z_individual_visuals/collision_anatomy/css/anatomy.css">
+  <link href="https://fonts.cdnfonts.com/css/shadow-light" rel="stylesheet">
+</head>
+
+
+<body class="comic-body">
+
+    <!-- Full-screen header -->
+    <header class="comic-hero" id="comic-hero">
+      <div class="comic-hero-inner">
+        <h1 class="comic-hero-title">Car Crashes Visualization</h1>
+        <p class="comic-hero-subtitle">
+          A comic-style walkthrough of exploring how speed limits, road types, and time affect collision risk.
+        </p>
+        <p class="comic-hero-hint">
+          Scroll to DOWN or use the arrows to navigate the interactive comic.
+        </p>
+      </div>
+    </header>
+
+  <!-- Fixed navigation arrows -->
+  <button class="comic-arrow comic-arrow-left" id="comic-arrow-prev" aria-label="Previous panel">&lt;</button>
+  <button class="comic-arrow comic-arrow-right" id="comic-arrow-next" aria-label="Next panel">&gt;</button>
+
+  <!-- Progress indicator -->
+  <div class="progress-indicator" id="progress-indicator">
+    <div class="progress-dots"></div>
+    <div class="progress-text"><span id="current-panel">1</span> / <span id="total-panels">13</span></div>
+  </div>
+
+  <div class="comic-scroll-wrapper">
+
+  <!-- Main comic area -->
+  <main class="comic-main">
+    <section class="comic-track" aria-label="Crash story panels">
+
+      <!-- Panel 1 – wakes up -->
+      <article class="comic-panel" data-panel-index="0">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">"A brand-new day begins as our driver slowly wakes up."</p>
+          <img src="img/panel1.png" alt="Driver wakes up" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 2 – checks phone (weekday heatmap) -->
+      <article class="comic-panel" data-panel-index="1">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">"He checks his phone to see which days are safest to travel.” </p>
+          <img src="img/panel2.png" alt="Driver checks phone" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+
+          <div class="chart-panel chart-panel--heatmap" data-zoomable>
+            <button class="chart-close" type="button">&times;</button>
+            <section class="chart-content chart-content--heatmap heatmap-section">
+              <header class="heatmap-header text-center">
+                <h2>Which day of week has highest collision rate?</h2>
+                <p>
+                  Calendar-style heatmap of collisions by weekday (columns) and year (rows).
+                  Slide the year range to explore trends over time.
+                </p>
+              </header>
+
+              <div class="chart-card heatmap-card">
+                <div id="heatmap" class="chart heatmap-chart"></div>
+                <div id="year-range" class="year-range heatmap-year-range"></div>
+                <div id="legend" class="legend heatmap-legend"></div>
+                <p class="heatmap-source text-center">
+                  Source: <code>data/collisions_by_weekday_year.csv</code>
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 3 – brushing teeth, wall clock -->
+      <article class="comic-panel" data-panel-index="2">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“While brushing his teeth, he wonders which time of day is safest.”</p>
+          <img src="img/panel3.png" alt="Driver brushes teeth and looks at clock" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+          
+
+          <div class="chart-panel chart-panel--clock" data-zoomable>
+            <button class="chart-close" type="button">&times;</button>
+            <section class="chart-content chart-content--clock">
+              <h2 class="chart-title">When during the day is crash risk highest?</h2>
+              <div id="clock-visualization"></div>
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 4 – steps outside -->
+      <article class="comic-panel" data-panel-index="3">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“He steps outside, ready to start his journey to work.”</p>
+          <img src="img/panel4.png" alt="Driver steps outside" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 5 – starts car -->
+    <article class="comic-panel" data-panel-index="4">
+      <div class="comic-panel-inner">
+        
+        <p class="panel-caption">"The engine hums. He buckles up, knowing that not all impacts are created equal."</p>
+        
+        <img src="img/panel5.png" alt="Driver starts car" class="panel-image">
+        <div class="panel-bubble">Click to explore!</div>
+
+        <div class="chart-panel chart-panel--anatomy" data-zoomable>
+          <button class="chart-close" type="button">&times;</button>
+          <div class="chart-content chart-content--anatomy">
+            
+            <header class="anatomy-header text-center" style="margin-bottom: 1rem;">
+                <h2>Collision Anatomy & Lethality Risk</h2>
+                <p>Click zones to see where crashes happen (Volume) versus where they are most deadly (Severity).</p>
+            </header>
+
+            <div id="collision-anatomy-panel"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+      <!-- Panel 6 – speed limit sign, speed-limit visualization -->
+      <article class="comic-panel" data-panel-index="5">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“A speed-limit sign reminds him how speed affects safety.” </p>
+          <img src="img/panel6.png" alt="Speed limit sign" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+
+          <div class="chart-panel chart-panel--speed" data-zoomable>
+            <button class="chart-close" type="button">&times;</button>
+            <div class="chart-content chart-content--speed">
+              <h2>How do collisions change with speed limits?</h2>
+              <p>
+                Explore collisions by posted speed limit and collision severity.
+              </p>
+              <div id="car-speed-limit-crashes-vis-nathan"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 7 – multiple road types / road-type chart -->
+      <article class="comic-panel" data-panel-index="6">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“Different roads lie ahead, each with its own risks.” </p>
+          <img src="img/panel7.png" alt="Driver choosing between different road types" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+
+          <div class="chart-panel chart-panel--roadtype" data-zoomable>
+            <button class="chart-close" type="button">&times;</button>
+            <div class="chart-content chart-content--roadtype">
+              <section class="roadtype-section">
+                <header class="roadtype-header text-center">
+                  <h2>Road Collisions by Roadway Type</h2>
+                  <p>Circular bar chart showing collision data by road division type across years</p>
+                </header>
+
+                <div class="roadtype-content">
+                  <div class="roadtype-chart-panel">
+                    <div id="chart" class="roadtype-chart"></div>
+                    <div class="tooltip roadtype-tooltip"></div>
+                  </div>
+
+                  <div class="roadtype-controls">
+                    <div class="roadtype-filter-section">
+                      <div class="roadtype-section-title">View Mode:</div>
+                      <div class="roadtype-toggle-group">
+                        <button class="roadtype-toggle-button active" data-mode="absolute">Absolute</button>
+                        <button class="roadtype-toggle-button" data-mode="percent">Percentage</button>
+                      </div>
+                    </div>
+
+                    <div class="roadtype-filter-section">
+                      <div class="roadtype-section-title">Filter by Road Type:</div>
+                      <div class="roadtype-chips">
+                        <button class="roadtype-chip roadtype-chip--all active" data-roadtype="all">All</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <footer class="roadtype-footer">
+                  <p class="roadtype-note">
+                    Each bar represents the number of collisions for a specific road division type over time.
+                    Use the toggles above to switch between absolute counts and relative percentages.
+                  </p>
+                </footer>
+              </section>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 8 – reaches work -->
+      <article class="comic-panel" data-panel-index="7">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“He reaches work safely and gets ready for the day.”</p>
+          <img src="img/panel8.png" alt="Driver reaches work" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 9 – dreams of vacation -->
+      <article class="comic-panel" data-panel-index="8">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“His mind wanders... Maybe a vacation would be nice…”</p>
+          <img src="img/panel9.png" alt="Driver dreams of vacation" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 10 – calendar month chart -->
+      <article class="comic-panel" data-panel-index="9">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“He checks the calendar to find the safest month for a trip.” </p>
+          <img src="img/panel10.png" alt="Calendar panel" class="panel-image">
+          <div class="panel-bubble">Click to explore!</div>
+
+          <div class="chart-panel chart-panel--month" data-zoomable>
+            <button class="chart-close" type="button">&times;</button>
+            <section class="chart-content chart-content--month">
+              <h2>Collisions by Month of Year</h2>
+              <p>Circular bar chart of collision counts by month.</p>
+              <div id="circular-bar-chart"></div>
+              
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 11 – asks boss -->
+      <article class="comic-panel" data-panel-index="10">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“He asks his boss about taking some time off.”</p>
+          <img src="img/panel11.png" alt="Driver asking boss" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 12 – vacation approved -->
+      <article class="comic-panel" data-panel-index="11">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“Great news! His vacation is approved. A happy free man.”</p>
+          <img src="img/panel12.png" alt="Vacation approved" class="panel-image">
+        </div>
+      </article>
+
+      <!-- Panel 13 – drives into adventure -->
+      <article class="comic-panel" data-panel-index="12">
+        <div class="comic-panel-inner">
+          <p class="panel-caption">“With everything planned, he drives into his long-awaited adventure.” THE END</p>
+          <img src="img/panel13.png" alt="Drives into adventure" class="panel-image">
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <div class="comic-scroll-length"></div>
+
+
+  <!-- UNIVERSAL VISUALIZATION POPUP -->
+<div id="viz-popup-overlay" class="viz-popup-overlay">
+  <div id="viz-popup-content" class="viz-popup-content">
+      <button id="viz-close" class="viz-close">&times;</button>
+      <div id="viz-mount"></div>
+  </div>
+</div>
+
+  <script src="z_individual_visuals/heatmap/js/calendar-heatmap.js"></script>
+  <script src="z_individual_visuals/speed_limit/js/speedLimitVisSigns.js"></script>
+  <script src="z_individual_visuals/circular_bar_month/js/circularBarChart.js"></script>
+  <script src="z_individual_visuals/collision_by_roadtypes/js/collision_by_roadtype.js"></script>
+  <script src="z_individual_visuals/clockVis/js/clockVis.js"></script>
+  <script src="z_individual_visuals/collision_anatomy/js/processData.js"></script>
+  <script src="z_individual_visuals/collision_anatomy/js/collision-anatomy.js"></script>
+
+  <!-- Generic viz interactions (zooming, etc.) -->
+  <script src="js/main.js"></script>
+
+  <!-- Scroll + arrow controller -->
+  <script src="js/comic_scroll.js"></script>
+  <script src="js/viz_popup.js"></script>
+  <script src="js/panels.js"></script>
+</body>
+</html>

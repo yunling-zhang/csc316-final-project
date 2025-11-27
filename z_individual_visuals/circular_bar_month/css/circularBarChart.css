@@ -1,1 +1,56 @@
+/* Circular Bar Chart Visualization Styles */
 
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.circular-chart-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.circular-chart-section h2 {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.circular-chart-section p {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#circular-bar-chart {
+    min-height: 600px;
+}
+
+.circular-chart-svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Ensure the chart has proper spacing */
+#circular-bar-chart svg {
+    display: block;
+}
+
+/* Legend styling */
+#circular-legend {
+    margin-top: 16px;
+}
+
+/* Make sure Bootstrap utilities work properly */
+.container-fluid {
+    padding-left: 16px;
+    padding-right: 16px;
+}

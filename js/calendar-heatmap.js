@@ -85,8 +85,6 @@
   const allYears = Array.from(new Set(longData.map(d => d.year))).sort((a, b) => a - b);
   const minYear = d3.min(allYears);
   const maxYear = d3.max(allYears);
-  const defaultStart = Math.max(minYear, maxYear - 4); // last 5 years
-  const defaultEnd = maxYear;
 
   // ---------- Main heatmap SVG ----------
   const margin = { top: 60, right: 40, bottom: 20, left: 80 };
@@ -240,8 +238,8 @@
     // updateMiniPreview();
   }
 
-  // Initial render
-  updateYears(d3.range(defaultStart, defaultEnd + 1), false);
+  // Initial render: all years
+  updateYears(allYears, false);
 
   // ---------- Year range slider / brush ----------
   const timelineContainer = rangeContainer.append("div").attr("class", "timeline-container");
@@ -251,7 +249,7 @@
 
   const rangeLabel = rangeHeader.append("div")
     .attr("class", "range-label-text")
-    .text(`Years selected: ${defaultStart}–${defaultEnd}`);
+    .text(`Years selected: ${minYear}–${maxYear}`);
 
   const controls = rangeHeader.append("div").attr("class", "year-range-controls");
   const selectAllBtn = controls.append("button").attr("type", "button").text("Check all years");
@@ -289,7 +287,7 @@
   const brushSel = brushG.append("g").attr("class", "brush").call(brush);
 
   const yearsToSelection = (start, end) => [xYear(start), xYear(end)];
-  brushSel.call(brush.move, yearsToSelection(defaultStart, defaultEnd));
+  brushSel.call(brush.move, yearsToSelection(minYear, maxYear));
 
   function updateRangeLabel(y0, y1) {
     const lo = Math.min(y0, y1);
@@ -339,7 +337,7 @@
   }
 
   selectAllBtn.on("click", () => moveToRange(minYear, maxYear));
-  resetBtn.on("click", () => moveToRange(defaultStart, defaultEnd));
+  resetBtn.on("click", () => moveToRange(maxYear - 5, maxYear));
 
   // ---------- Legend ----------
   renderLegend(legendContainer, color, vmin, vmax, width);

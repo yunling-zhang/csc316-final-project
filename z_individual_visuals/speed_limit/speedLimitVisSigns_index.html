@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Limit Crash Visualization</title>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/speedLimitVisSigns.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Crashes by Posted Speed Limit</h1>
+        <p class="subtitle">Drive the slider to see how collision counts change at different speed limits. Watch the signs pass by as you accelerate!</p>
+
+        <div class="speed-controls" id="car-speed-limit-crashes-vis-nathan-controls">
+            <label for="car-speed-limit-crashes-vis-nathan-year-select">Select Year:</label>
+            <select id="car-speed-limit-crashes-vis-nathan-year-select"></select>
+        </div>
+
+        <div id="car-speed-limit-crashes-vis-nathan"></div>
+
+        <p class="source-text">
+            Source: <code>data/cleaned_crash_by_month.csv</code>
+        </p>
+    </div>
+
+    <!-- Speed Limit Visualization JS -->
+    <script src="js/speedLimitVisSigns.js"></script>
+
+    <script>
+        // Load and initialize the speed limit visualization
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataPath = '../../data/cleaned_crash_by_month.csv';
+
+            d3.csv(dataPath).then(rawData => {
+                console.log('Data loaded successfully (speed limit):', rawData.length, 'rows');
+                initializeVisualization(rawData);
+            }).catch(error => {
+                console.error('Error loading the CSV file for speed-limit vis:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>

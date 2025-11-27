@@ -1,104 +1,178 @@
+// js/panels.js
 
 (function () {
-    // ===== PANEL-TO-PANEL NAVIGATION =====
-    const panels = Array.from(document.querySelectorAll('.comic-panel'));
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-
+    const panels = Array.from(document.querySelectorAll(".comic-panel"));
+    if (!panels.length) return;
+  
+    const body = document.body;
+    const hero = document.querySelector(".comic-hero");
+    const introOverlay = document.getElementById("intro-overlay");
+    const introBtn = document.getElementById("intro-main-btn");
+  
+    const prevArrow = document.getElementById("arrow-prev");
+    const nextArrow = document.getElementById("arrow-next");
+  
     let currentIndex = 0;
-
-    function updatePanels() {
-        panels.forEach((p, i) => {
-            p.classList.toggle('active', i === currentIndex);
-        });
-
-        if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === panels.length - 1;
+    let lastScrollY = window.scrollY;
+  
+    // Helper: scroll smoothly to a panel by index
+    function scrollToPanel(index) {
+      if (index < 0 || index >= panels.length) return;
+      const target = panels[index];
+  
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }
-
-    prevBtn?.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updatePanels();
+  
+    // Helper: apply animation classes when active panel changes
+    function animateTransition(oldIndex, newIndex) {
+      if (oldIndex === newIndex) return;
+  
+      const oldPanel = panels[oldIndex];
+      const newPanel = panels[newIndex];
+  
+      const direction = newIndex > oldIndex ? "down" : "up";
+  
+      // Clean up previous animation classes
+      panels.forEach((p) => {
+        p.classList.remove(
+          "animate-from-right",
+          "animate-from-left",
+          "animate-to-left",
+          "animate-to-right"
+        );
+      });
+  
+      // Mark both as visible (so opacity isn't 0)
+      oldPanel.classList.add("is-visible");
+      newPanel.classList.add("is-visible");
+  
+      if (direction === "down") {
+        oldPanel.classList.add("animate-to-left");
+        newPanel.classList.add("animate-from-right");
+      } else {
+        oldPanel.classList.add("animate-to-right");
+        newPanel.classList.add("animate-from-left");
+      }
+    }
+  
+    // Determine which panel is closest to viewport center
+    function computeClosestPanelIndex() {
+      const viewportCenter = window.innerHeight / 2;
+  
+      let bestIndex = currentIndex;
+      let bestDist = Infinity;
+  
+      panels.forEach((panel, i) => {
+        const rect = panel.getBoundingClientRect();
+        const centerY = rect.top + rect.height / 2;
+        const dist = Math.abs(centerY - viewportCenter);
+  
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIndex = i;
         }
-    });
-
-    nextBtn?.addEventListener('click', () => {
-        if (currentIndex < panels.length - 1) {
-            currentIndex++;
-            updatePanels();
+      });
+  
+      return bestIndex;
+    }
+  
+    // Scroll listener to detect active panel change
+    function onScroll() {
+      const newScrollY = window.scrollY;
+      const newIndex = computeClosestPanelIndex();
+  
+      if (newIndex !== currentIndex) {
+        animateTransition(currentIndex, newIndex);
+        currentIndex = newIndex;
+      }
+  
+      lastScrollY = newScrollY;
+  
+      // Show arrows once user has moved past hero
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        if (heroRect.bottom < 0) {
+          body.classList.add("comic-arrows-visible");
+        } else {
+          body.classList.remove("comic-arrows-visible");
         }
+      }
+    }
+  
+    // Initialize: mark first panel as visible
+    panels[0].classList.add("is-visible");
+  
+    window.addEventListener("scroll", onScroll, { passive: true });
+  
+    // Arrow navigation
+    if (prevArrow) {
+      prevArrow.addEventListener("click", () => {
+        scrollToPanel(currentIndex - 1);
+      });
+    }
+  
+    if (nextArrow) {
+      nextArrow.addEventListener("click", () => {
+        scrollToPanel(currentIndex + 1);
+      });
+    }
+  
+    // Keyboard arrows for accessibility
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") {
+        scrollToPanel(currentIndex + 1);
+      } else if (e.key === "ArrowLeft") {
+        scrollToPanel(currentIndex - 1);
+      }
     });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') prevBtn?.click();
-        if (e.key === 'ArrowRight') nextBtn?.click();
-    });
-
-    updatePanels();
-
-    // ===== OPENING OVERLAY =====
-    const introOverlay = document.getElementById('intro-overlay');
-    const introMainBtn = document.getElementById('intro-main-btn');
-
+  
+    // Intro overlay behavior
     function dismissIntro() {
-        if (!introOverlay) return;
-        introOverlay.classList.add('hidden');
-        setTimeout(() => {
-            introOverlay.style.display = 'none';
-        }, 400);
+      if (!introOverlay) return;
+      introOverlay.classList.add("hidden");
     }
-
-    introOverlay?.addEventListener('click', dismissIntro);
-
-    introMainBtn?.addEventListener('click', (e) => {
-        e.stopPropagation();
+  
+    if (introBtn && introOverlay) {
+      introBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         dismissIntro();
-    });
-
-    setTimeout(dismissIntro, 4000);
-
-    // ===== CHART MODALS (heatmap, etc.) =====
-    const modalTriggers = document.querySelectorAll('[data-modal-target]');
-
-    function openModal(modal) {
-        if (!modal) return;
-        modal.classList.add('open');
-
-        // Tell other scripts (like heatmap.js) that a modal just opened
-        const evt = new CustomEvent('chart-modal-opened', {
-            detail: { id: modal.id }
-        });
-        document.dispatchEvent(evt);
+      });
+  
+      // Auto-dismiss after a short delay (optional)
+      setTimeout(dismissIntro, 4000);
     }
+  
+    // ====== Keep your existing modal ESC behavior at the bottom ======
+    // If your previous panels.js had logic like:
+    // document.querySelectorAll('.chart-modal.open')... ESC closes, etc.
+    // you can paste that unchanged below this line.
+  })();
+  
+const PANEL_VIZ_MAP = {
+  2: "heatmap",
+  3: "clock",
+  6: "speed_limit",
+  7: "road_types",
+  10: "circular_bar"
+};
 
-    function closeModal(modal) {
-        if (!modal) return;
-        modal.classList.remove('open');
-
-        // If this is the heatmap modal, refresh the mini phone preview in Panel 2
-        if (modal.id === 'heatmap-modal') {
-            document.dispatchEvent(new Event('heatmap-update-mini'));
-        }
-    }
-
-    modalTriggers.forEach(trigger => {
-        const targetSelector = trigger.getAttribute('data-modal-target');
-        const modal = document.querySelector(targetSelector);
-        if (!modal) return;
-
-        // Thumbnail click -> open
-        trigger.addEventListener('click', () => openModal(modal));
-
-        // Click on dark backdrop -> close
-        const backdrop = modal.querySelector('.chart-modal-backdrop');
-        backdrop?.addEventListener('click', () => closeModal(modal));
-    });
-
-    // ESC closes any open modal
-    document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape') return;
-        document.querySelectorAll('.chart-modal.open').forEach(m => closeModal(m));
-    });
-})();
+// ADD THIS function to use standardized file locations
+export function getVizURLForPanel(panelNum) {
+  switch (PANEL_VIZ_MAP[panelNum]) {
+    case "heatmap":
+      return "z_individual_visuals/heatmap/heatmap_index.html";
+    case "clock":
+      return "z_individual_visuals/clockVis/clockVis.html";  // If index missing, create later
+    case "speed_limit":
+      return "z_individual_visuals/speed_limit/speedLimitVisSigns_index.html";
+    case "road_types":
+      return "z_individual_visuals/collision_by_roadtypes/collision_by_roadtype.html";
+    case "circular_bar":
+      return "z_individual_visuals/circular_bar_month/circularBarChart_index.html"; // create later if missing
+    default:
+      return null;
+  }
+}

@@ -647,6 +647,55 @@ body.no-scroll {
    Panel-specific chart placement
    --------------------------- */
 
+/* Panel 2 – phone heatmap (landscape) */
+.panel-2 .chart-panel--heatmap {
+    left: 32%;
+    bottom: 14%;
+    width: 40%;
+    transform: translateX(-50%);
+}
+
+/* flatten padding in phone mode */
+.panel-2 .chart-panel--heatmap .heatmap-section {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+.panel-2 .chart-panel--heatmap .heatmap-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* scale the car heatmap into the phone */
+.panel-2 .chart-panel--heatmap .car-svg {
+    transform:translate(-17%, -70%)  scale(0.65);
+    transform-origin: 50% 50%;
+}
+
+/* hide long UI in mini mode */
+.panel-2 .chart-panel--heatmap .heatmap-header,
+.panel-2 .chart-panel--heatmap .heatmap-year-range,
+.panel-2 .chart-panel--heatmap .heatmap-legend,
+.panel-2 .chart-panel--heatmap .heatmap-source {
+    display: none;
+}
+
+/* when zoomed, full size + show header/controls/legend */
+.panel-2 .chart-panel--heatmap.is-zoomed .car-svg {
+    transform: scale(1);
+}
+
+
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-header,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-year-range,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-legend,
+.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-source {
+    display: block;
+}
+
+
 /* Panel 6 – speed-limit sign */
 .panel-6 .chart-panel--speed {
     left: 47%;
@@ -1124,126 +1173,6 @@ body.no-scroll {
     display: block;
 }
 
-/* === Car PNG background version for Panel 2 === */
-
-/* We flatten the card so the car art + heatmap take over */
-.heatmap-card {
-    background: transparent;
-    border: none;
-    border-radius: 16px;
-    padding: 0;
-    box-shadow: none;
-    width: 100%;
-    margin: 0 auto;
-}
-
-/* Full-width car image container */
-.car-section {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-/* Car PNG fills the width */
-.car-fullwidth {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-}
-
-/* Floating heatmap card over the car */
-.heatmap-floating-panel {
-    position: absolute;
-    top: 54%;
-    left: 57%;
-    transform: translate(-50%, -50%);
-    padding: 24px;
-    background: rgba(255, 240, 222, 0.94);
-    border-radius: 12px;
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
-    width: min(80vw, 600px);  /* keeps it readable on smaller screens */
-}
-
-.heatmap-floating-panel svg {
-    width: 100%;
-    height: auto;
-}
-
-/* Controls + legend panel under the car */
-.controls-section {
-    margin-top: 0;
-    padding: 20px;
-    /* background: rgba(255, 227, 204, 0.92); */
-    border-radius: 12px;
-    max-width: 80vw;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Make labels big enough to read over the car */
-.axis--y text {
-    font-size: 24px;
-}
-
-.axis--x text {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-
-/* In mini mode, hide header / controls / source text */
-.panel-2 .chart-panel--heatmap .heatmap-header,
-.panel-2 .chart-panel--heatmap .heatmap-year-range,
-.panel-2 .chart-panel--heatmap .heatmap-legend,
-.panel-2 .chart-panel--heatmap .heatmap-source {
-    display: none;
-}
-
-/* When zoomed, show full car background at normal scale */
-.panel-2 .chart-panel--heatmap.is-zoomed {
-    /* global .chart-panel.is-zoomed already makes it full-screen,
-       so here we just undo the mini scaling/cropping */
-    width: 100vw;
-    height: 100vh;
-    overflow: visible;
-}
-
-.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-card {
-    transform: none;          /* full size like standalone page */
-}
-
-.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-header,
-.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-year-range,
-.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-legend,
-.panel-2 .chart-panel--heatmap.is-zoomed .heatmap-source {
-    display: block;
-}
-
-/* Panel 2 – mini car heatmap sitting in the phone */
-.panel-2 .chart-panel--heatmap {
-    position: absolute;
-    top: 67%;                 /* align with phone screen vertically */
-    left: 26%;                /* align horizontally */
-    height: 100%;              /* fit inside phone screen */
-    width: 100%;
-    transform: translate(-50%, -50%) scale(0.26);
-    transform-origin: center center;
-    cursor: pointer;
-}
-
-/* We don't scale inner pieces anymore; keep the car layout as-is */
-.panel-2 .chart-panel--heatmap .heatmap-card {
-    transform: none;
-}
-
-/* Hide header / controls / source text in mini mode */
-.panel-2 .chart-panel--heatmap .heatmap-header,
-.panel-2 .chart-panel--heatmap .heatmap-year-range,
-.panel-2 .chart-panel--heatmap .heatmap-legend,
-.panel-2 .chart-panel--heatmap .heatmap-source {
-    display: none;
-}
 
 
 /* ===========================
@@ -1257,4 +1186,62 @@ body.no-scroll {
     .chart-panel[data-zoomable]::after {
         font-size: 10px;
     }
+}
+
+/* ============================================
+   COMIC PAGE OVERRIDES FOR CHART MODALS
+   ============================================ */
+
+/* On the comic page, keep embedded chart blocks in normal flow
+   so they don't overlap captions/images (fixes panel 3 overlap). */
+   body.comic-body .chart-panel {
+    position: static;
+    margin-top: 0.75rem;
+  }
+  
+  /* Zoomed state is already a full-screen flex container.
+     Here we just tweak the inner card to be ~90% viewport and comic-y. */
+  body.comic-body .chart-panel.is-zoomed {
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Comic-style modal card: 90% of viewport, outlined like a panel */
+  body.comic-body .chart-panel.is-zoomed .chart-content {
+    position: relative;
+    width: 90vw;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+  
+    background: #ffffff;
+    border-radius: 18px;
+    border: 3px solid #000000;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    padding: 18px 20px;
+  }
+  
+  /* Slight doodle-outline echo, like the comic panels */
+  body.comic-body .chart-panel.is-zoomed .chart-content::before {
+    content: "";
+    position: absolute;
+    inset: 8px -8px -8px 8px;
+    border-radius: 18px;
+    border: 3px solid #000000;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  
+  /* Make headings inside the modal feel more comic-ish,
+     but don't touch body text to keep charts readable. */
+  body.comic-body .chart-panel.is-zoomed .chart-title,
+  body.comic-body .chart-panel.is-zoomed h2 {
+    font-family: "Bangers", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .chart-panel {
+    display: none;        /* NEVER show inside comic */
 }

@@ -776,4 +776,3 @@ function spawnSign(svg, speedLimitData, startX) {
         speedLimit: speedLimitData
     });
 }
-
