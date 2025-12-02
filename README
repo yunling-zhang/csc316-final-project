@@ -1,4 +1,6 @@
 URL to project website: https://yunling-zhang.github.io/csc316-final-project/comic.html
 URL to project video: https://drive.google.com/file/d/18nLNjKqtk7zCOaOm1eBZ30gXdrCi3Y7k/view?usp=sharing
 
-All the code are our code, while index.html shows the vertical scrolling version of our website (with a few visualizations missing) and comic.html shows the latest and final version of our website.
+All the code are our code, while index.html shows the vertical scrolling version of our website (with a few visualizations missing) and comic.html shows the latest and final version of our website. For the code to work you need to put the data folder into the code folder.
+
+Non-obvious features of the roadtype visualization: the legends can be toggled on and off.
